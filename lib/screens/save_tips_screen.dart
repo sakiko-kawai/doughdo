@@ -5,6 +5,6 @@ class SaveTipsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("save tips screen"));
+    return const Scaffold(body: Text("save tips screen"));
   }
 }

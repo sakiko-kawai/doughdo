@@ -1,5 +1,6 @@
 import 'package:bread_app/models/bakers_percentage_state.dart';
 import 'package:bread_app/widgets/bp_amount_form.dart';
+import 'package:bread_app/widgets/bp_convert_buttons.dart';
 import 'package:bread_app/widgets/bp_percentage_form.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +16,7 @@ class BakersPercentageScreen extends StatelessWidget {
         body: Column(
           children: [
             BpPercentageForm(),
+            BpConvertButtons(),
             BpAmountForm(),
           ],
         ),

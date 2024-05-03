@@ -5,6 +5,6 @@ class CustomScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("placeholder for custom scaffold"));
+    return const Scaffold(body: Text("placeholder for custom scaffold"));
   }
 }

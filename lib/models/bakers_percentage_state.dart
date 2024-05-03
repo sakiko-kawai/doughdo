@@ -1,46 +1,59 @@
 import 'package:flutter/widgets.dart';
 
 class BakersPercentageState extends ChangeNotifier {
-  double _waterPercentage = 0;
-  set waterPercentage(double waterPercentage) {
+  String _waterPercentage = "70";
+  set waterPercentage(String waterPercentage) {
     _waterPercentage = waterPercentage;
     notifyListeners();
   }
 
-  double get waterPercentage => _waterPercentage;
+  String get waterPercentage => _waterPercentage;
 
-  double _starterPercentage = 0;
-  set starterPercentage(double starterPercentage) {
+  String _starterPercentage = "10";
+  set starterPercentage(String starterPercentage) {
     _starterPercentage = starterPercentage;
     notifyListeners();
   }
 
-  double get starterPercentage => _starterPercentage;
+  String get starterPercentage => _starterPercentage;
 
-  double _saltPercentage = 0;
-  set saltPercentage(double saltPercentage) {
+  String _saltPercentage = "2";
+  set saltPercentage(String saltPercentage) {
     _saltPercentage = saltPercentage;
     notifyListeners();
   }
 
-  double get saltPercentage => _saltPercentage;
+  String get saltPercentage => _saltPercentage;
 
-  double _flourAmount = 0;
-  set flourAmount(double flourAmount) {
+  String _flourAmount = "500";
+  set flourAmount(String flourAmount) {
     _flourAmount = flourAmount;
     notifyListeners();
   }
 
-  double get flourAmount => _flourAmount;
-}
+  String get flourAmount => _flourAmount;
 
-class BakersPercentageModelHaha {
-  double waterPercentage = 0;
-  double starterPercentage = 0;
-  double saltPercentage = 0;
+  String _waterAmount = "350";
+  set waterAmount(String waterAmount) {
+    _waterAmount = waterAmount;
+    notifyListeners();
+  }
 
-  double flourAmount = 0;
-  double waterAmount = 0;
-  double starterAmount = 0;
-  double saltAmount = 0;
+  String get waterAmount => _waterAmount;
+
+  String _starterAmount = "50";
+  set starterAmount(String starterAmount) {
+    _starterAmount = starterAmount;
+    notifyListeners();
+  }
+
+  String get starterAmount => _starterAmount;
+
+  String _saltAmount = "10";
+  set saltAmount(String saltAmount) {
+    _saltAmount = saltAmount;
+    notifyListeners();
+  }
+
+  String get saltAmount => _saltAmount;
 }

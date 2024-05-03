@@ -5,6 +5,6 @@ class RecordBakeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("record your bake here"));
+    return const Scaffold(body: Text("record your bake here"));
   }
 }
