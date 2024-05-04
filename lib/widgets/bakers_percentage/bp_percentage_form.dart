@@ -5,14 +5,9 @@ import '../../models/bakers_percentage_state.dart';
 import '../../utils/text_field_helper.dart';
 import '../custom/custom_text_field.dart';
 
-class BpPercentageForm extends StatefulWidget {
-  const BpPercentageForm({super.key});
+class BpPercentageForm extends StatelessWidget {
+  BpPercentageForm({super.key});
 
-  @override
-  State<BpPercentageForm> createState() => _BpPercentageFormState();
-}
-
-class _BpPercentageFormState extends State<BpPercentageForm> {
   final TextEditingController _flourController = TextEditingController();
   final TextEditingController _waterController = TextEditingController();
   final TextEditingController _starterController = TextEditingController();
@@ -28,7 +23,10 @@ class _BpPercentageFormState extends State<BpPercentageForm> {
     TextController.setController(_saltController, bpState.saltPercentage);
 
     return Column(children: [
-      const Text("Baker's Percentage"),
+      const Text(
+        "Baker's Percentage",
+        style: TextStyle(fontSize: 18),
+      ),
       CustomTextField(
         controller: _flourController,
         label: "Flour",

@@ -5,14 +5,9 @@ import '../../models/bakers_percentage_state.dart';
 import '../../utils/text_field_helper.dart';
 import '../custom/custom_text_field.dart';
 
-class BpSettingsForm extends StatefulWidget {
-  const BpSettingsForm({super.key});
+class BpSettingsForm extends StatelessWidget {
+  BpSettingsForm({super.key});
 
-  @override
-  State<BpSettingsForm> createState() => _BpSettingsFormState();
-}
-
-class _BpSettingsFormState extends State<BpSettingsForm> {
   final TextEditingController _hydratonController = TextEditingController();
 
   @override

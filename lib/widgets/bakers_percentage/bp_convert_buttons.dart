@@ -28,7 +28,7 @@ class BpConvertButtons extends StatelessWidget {
                 bpState.flourAmount, bpState.saltPercentage);
           },
           icon: const Icon(Icons.arrow_downward),
-          label: const Text("Calculate amount of ingredients"),
+          label: const Text("Calculate Amount of Ingredients"),
         ),
         const CustomSizedBox(),
         ElevatedButton.icon(
@@ -44,8 +44,9 @@ class BpConvertButtons extends StatelessWidget {
                 bpState.flourAmount, bpState.saltAmount);
           },
           icon: const Icon(Icons.arrow_upward),
-          label: const Text("Calculate Baker's percentage"),
+          label: const Text("Calculate Baker's Percentage"),
         ),
+        const CustomSizedBox(),
       ],
     );
   }

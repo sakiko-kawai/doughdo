@@ -15,12 +15,12 @@ class BakersPercentageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => BakersPercentageState(),
-      child: const CustomScaffold(
+      child: CustomScaffold(
         child: Column(
           children: [
             BpSettingsForm(),
             BpPercentageForm(),
-            BpConvertButtons(),
+            const BpConvertButtons(),
             BpAmountForm(),
           ],
         ),
