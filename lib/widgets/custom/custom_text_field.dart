@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'custom_sized_box.dart';
+
 // ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
@@ -33,10 +35,9 @@ class CustomTextField extends StatelessWidget {
           ],
           maxLengthEnforcement: MaxLengthEnforcement.enforced,
           maxLength: 6,
+          keyboardType: TextInputType.number,
         ),
-        const SizedBox(
-          height: 10,
-        )
+        const CustomSizedBox(),
       ],
     );
   }

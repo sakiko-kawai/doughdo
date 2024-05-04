@@ -1,3 +1,4 @@
+import 'package:bread_app/widgets/custom/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 
 class RecordBakeScreen extends StatelessWidget {
@@ -5,6 +6,6 @@ class RecordBakeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Text("record your bake here"));
+    return const CustomScaffold(child: Text("record your bake here"));
   }
 }

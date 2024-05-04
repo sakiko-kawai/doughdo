@@ -1,6 +1,14 @@
 import 'package:flutter/widgets.dart';
 
 class BakersPercentageState extends ChangeNotifier {
+  String _starterHydration = "100";
+  set starterHydration(String starterHydration) {
+    _starterHydration = starterHydration;
+    notifyListeners();
+  }
+
+  String get starterHydration => _starterHydration;
+
   String _waterPercentage = "70";
   set waterPercentage(String waterPercentage) {
     _waterPercentage = waterPercentage;

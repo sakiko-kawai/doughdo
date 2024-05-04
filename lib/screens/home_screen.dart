@@ -3,8 +3,8 @@ import 'package:bread_app/screens/record_bake_screen.dart';
 import 'package:bread_app/screens/save_tips_screen.dart';
 import 'package:flutter/material.dart';
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
