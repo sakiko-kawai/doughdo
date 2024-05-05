@@ -31,7 +31,7 @@ class CustomScaffold extends StatelessWidget {
                 );
               },
               icon: const Icon(
-                Icons.calculate_outlined,
+                Icons.calculate_rounded,
                 color: Colors.white,
               ),
             ),
@@ -46,7 +46,7 @@ class CustomScaffold extends StatelessWidget {
                 );
               },
               icon: const Icon(
-                Icons.notes_outlined,
+                Icons.bookmark_rounded,
                 color: Colors.white,
               ),
             ),

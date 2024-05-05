@@ -3,14 +3,13 @@ import 'package:flutter/services.dart';
 
 import 'custom_sized_box.dart';
 
-// ignore: must_be_immutable
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String label;
   final String unit;
-  void Function(String)? onChanged;
+  final void Function(String)? onChanged;
 
-  CustomTextField(
+  const CustomTextField(
       {Key? key,
       required this.controller,
       required this.label,

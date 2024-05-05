@@ -1,15 +1,16 @@
+import 'package:bread_app/screens/bakers_percentage_screen.dart';
+import 'package:bread_app/utils/db_helper.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/home_screen.dart';
-
-void main() {
+void main() async {
   runApp(const MyBreadApp());
+
+  await DbHelper().database;
 }
 
 class MyBreadApp extends StatelessWidget {
   const MyBreadApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -22,7 +23,7 @@ class MyBreadApp extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: 300),
         ),
       ),
-      home: const HomeScreen(),
+      home: const BakersPercentageScreen(),
     );
   }
 }
