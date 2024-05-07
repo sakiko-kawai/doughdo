@@ -1,3 +1,5 @@
+import 'package:bread_app/models/bakers_percentage_key.dart';
+import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +26,7 @@ class BpSettingsForm extends StatelessWidget {
         onChanged: (value) {
           bpState.starterHydration = value;
           _hydratonController.text = bpState.starterHydration;
+          SpHelper().save(BpKey().starterHydration, value);
         },
       ),
     ]);

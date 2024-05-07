@@ -1,11 +1,13 @@
 import 'package:bread_app/screens/bakers_percentage_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
+import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
-  runApp(const MyBreadApp());
-
   await DbHelper().database;
+  await SpHelper().prefs;
+
+  runApp(const MyBreadApp());
 }
 
 class MyBreadApp extends StatelessWidget {

@@ -1,4 +1,6 @@
+import 'package:bread_app/models/bakers_percentage_key.dart';
 import 'package:bread_app/utils/calc_helper.dart';
+import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:bread_app/widgets/custom/custom_sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +28,10 @@ class BpConvertButtons extends StatelessWidget {
                 bpState.starterHydration);
             bpState.saltAmount = CalcHelper.calcAmount(
                 bpState.flourAmount, bpState.saltPercentage);
+
+            SpHelper().save(BpKey().starterAmount, bpState.starterAmount);
+            SpHelper().save(BpKey().waterAmount, bpState.waterAmount);
+            SpHelper().save(BpKey().saltAmount, bpState.saltAmount);
           },
           icon: const Icon(Icons.arrow_downward),
           label: const Text("Calculate Amount of Ingredients"),
@@ -42,6 +48,11 @@ class BpConvertButtons extends StatelessWidget {
                 bpState.flourAmount, bpState.starterAmount);
             bpState.saltPercentage = CalcHelper.calcPercentage(
                 bpState.flourAmount, bpState.saltAmount);
+
+            SpHelper().save(BpKey().waterPercentage, bpState.starterAmount);
+            SpHelper()
+                .save(BpKey().starterPercentage, bpState.starterPercentage);
+            SpHelper().save(BpKey().saltPercentage, bpState.saltPercentage);
           },
           icon: const Icon(Icons.arrow_upward),
           label: const Text("Calculate Baker's Percentage"),

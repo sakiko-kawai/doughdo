@@ -1,3 +1,5 @@
+import 'package:bread_app/models/bakers_percentage_key.dart';
+import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -34,6 +36,7 @@ class BpPercentageForm extends StatelessWidget {
         onChanged: (value) {
           bpState.flourAmount = value;
           _flourController.text = bpState.flourAmount;
+          SpHelper().save(BpKey().flourAmount, value);
         },
       ),
       CustomTextField(
@@ -43,6 +46,7 @@ class BpPercentageForm extends StatelessWidget {
         onChanged: (value) {
           bpState.waterPercentage = value;
           _waterController.text = bpState.waterPercentage;
+          SpHelper().save(BpKey().waterPercentage, value);
         },
       ),
       CustomTextField(
@@ -52,6 +56,7 @@ class BpPercentageForm extends StatelessWidget {
         onChanged: (value) {
           bpState.starterPercentage = value;
           _starterController.text = bpState.starterPercentage;
+          SpHelper().save(BpKey().starterPercentage, value);
         },
       ),
       CustomTextField(
@@ -61,6 +66,7 @@ class BpPercentageForm extends StatelessWidget {
         onChanged: (value) {
           bpState.saltPercentage = value;
           _saltController.text = bpState.saltPercentage;
+          SpHelper().save(BpKey().saltPercentage, value);
         },
       ),
     ]);
