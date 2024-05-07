@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/custom/custom_scaffold.dart';
+import '../widgets/scaffold/scaffold_basic.dart';
 
 class SaveTipsScreen extends StatelessWidget {
   const SaveTipsScreen({super.key});

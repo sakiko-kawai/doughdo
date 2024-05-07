@@ -1,4 +1,4 @@
-import 'package:bread_app/models/bakers_percentage.dart';
+import 'package:bread_app/models/bakers_percentage_key.dart';
 import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/widgets.dart';
 

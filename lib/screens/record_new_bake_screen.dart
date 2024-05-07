@@ -1,16 +1,22 @@
 import 'package:bread_app/utils/db_insert_helper.dart';
-import 'package:bread_app/widgets/custom/custom_scaffold.dart';
-import 'package:bread_app/widgets/custom/custom_sized_box.dart';
+import 'package:bread_app/utils/text_field_helper.dart';
+import 'package:bread_app/widgets/scaffold/scaffold_basic.dart';
+import 'package:bread_app/widgets/scaffold/scaffold_with_back_button.dart';
+import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/custom/custom_title.dart';
+import '../widgets/custom/title.dart';
 
 class RecordNewBakeScreen extends StatelessWidget {
-  const RecordNewBakeScreen({super.key});
+  RecordNewBakeScreen({super.key});
+
+  final TextEditingController _notesController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
+    TextController.setController(_notesController, _notesController.text);
+
+    return CustomScaffoldBackButton(
       child: Column(
         children: [
           const CustomTitle(
@@ -18,15 +24,16 @@ class RecordNewBakeScreen extends StatelessWidget {
             text: "Add New Record",
           ),
           const CustomSizedBox(),
-          const TextField(
-            decoration: InputDecoration(labelText: "Notes"),
+          TextField(
+            controller: _notesController,
+            decoration: const InputDecoration(labelText: "Notes"),
             maxLines: 10,
           ),
           const CustomSizedBox(),
           ElevatedButton(
             onPressed: () async {
               await DbInsertHelper().insertRecord(
-                "this is notes",
+                _notesController.text,
                 DateTime.now().toIso8601String(),
                 DateTime.now().toIso8601String(),
               );

@@ -1,5 +1,5 @@
-import 'package:bread_app/widgets/custom/custom_scaffold.dart';
-import 'package:bread_app/widgets/custom/custom_title.dart';
+import 'package:bread_app/widgets/scaffold/scaffold_basic.dart';
+import 'package:bread_app/widgets/custom/title.dart';
 import 'package:flutter/material.dart';
 
 import 'record_new_bake_screen.dart';
@@ -21,7 +21,7 @@ class RecordBakeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const RecordNewBakeScreen(),
+                  builder: (context) => RecordNewBakeScreen(),
                 ),
               );
             },

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/bakers_percentage_state.dart';
 import '../../utils/text_field_helper.dart';
-import '../custom/custom_text_field.dart';
+import '../custom/text_field.dart';
 
 class BpSettingsForm extends StatelessWidget {
   BpSettingsForm({super.key});

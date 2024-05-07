@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'custom_sized_box.dart';
+import 'sized_box.dart';
 
 class CustomTextField extends StatelessWidget {
   final TextEditingController controller;

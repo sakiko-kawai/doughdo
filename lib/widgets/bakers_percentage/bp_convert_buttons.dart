@@ -1,7 +1,7 @@
 import 'package:bread_app/models/bakers_percentage_key.dart';
 import 'package:bread_app/utils/calc_helper.dart';
 import 'package:bread_app/utils/shared_preferences_helper.dart';
-import 'package:bread_app/widgets/custom/custom_sized_box.dart';
+import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
