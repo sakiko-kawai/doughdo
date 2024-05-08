@@ -7,7 +7,7 @@ import '../widgets/bakers_percentage/bp_amount_form.dart';
 import '../widgets/bakers_percentage/bp_convert_buttons.dart';
 import '../widgets/bakers_percentage/bp_percentage_form.dart';
 import '../widgets/bakers_percentage/bp_settings_form.dart';
-import '../widgets/scaffold/scaffold_basic.dart';
+import '../widgets/custom/scaffold.dart';
 import '../widgets/custom/title.dart';
 
 class BakersPercentageScreen extends StatelessWidget {

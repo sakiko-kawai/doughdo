@@ -1,4 +1,4 @@
-import 'package:bread_app/widgets/scaffold/scaffold_basic.dart';
+import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/title.dart';
 import 'package:flutter/material.dart';
 

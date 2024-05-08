@@ -1,7 +1,6 @@
 import 'package:bread_app/utils/db_insert_helper.dart';
 import 'package:bread_app/utils/text_field_helper.dart';
-import 'package:bread_app/widgets/scaffold/scaffold_basic.dart';
-import 'package:bread_app/widgets/scaffold/scaffold_with_back_button.dart';
+import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +15,8 @@ class RecordNewBakeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextController.setController(_notesController, _notesController.text);
 
-    return CustomScaffoldBackButton(
+    return CustomScaffold(
+      showBackButton: true,
       child: Column(
         children: [
           const CustomTitle(
