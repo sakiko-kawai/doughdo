@@ -22,7 +22,6 @@ class CalcHelper {
         tryParseString(flourAmount) * toDecimalPercentage(waterPercentage);
     var waterInStarterAmount =
         calcWaterInStarter(starterAmount, starterHydration);
-    ;
 
     var waterAmount = waterInDoughAmount - waterInStarterAmount;
 

@@ -1,3 +1,4 @@
+import 'package:bread_app/models/record.dart';
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -10,6 +11,46 @@ class DbHelper {
 
     _database = await initializeDatabase();
     return _database!;
+  }
+
+  Future<void> insertRecord(
+    String notes,
+    String createdAt,
+    String updatedAt,
+  ) async {
+    var db = await database;
+    await db.insert(
+      'record',
+      Record(
+        notes: Notes(notes: notes),
+        createdAt: CreatedAt(DateTime.parse(createdAt)),
+        updatedAt: UpdatedAt(DateTime.parse(updatedAt)),
+      ).toMap(),
+    );
+  }
+
+  Future<List<Record>> getAllRecords() async {
+    final db = await database;
+    List<Map<String, dynamic>> maps = await db.query('record');
+    List<Record> records =
+        maps.map((record) => Record.fromMap(record)).toList();
+
+    return records;
+  }
+
+  Future<Record> getRecordById(RecordId recordId) async {
+    final db = await database;
+    String id = recordId.id.toString();
+    List<Map<String, dynamic>> maps = await db.query(
+      'record',
+      where: 'id = \'$id\'',
+    );
+    if (maps.length > 1) {
+      debugPrint('There are more than one record that matches the RecordId.');
+    } else if (maps.isEmpty) {
+      debugPrint('There are no record that matches the RecordId.');
+    }
+    return Record.fromMap(maps.first);
   }
 
   Future<Database> initializeDatabase() async {

@@ -1,5 +1,8 @@
+import 'package:bread_app/widgets/custom/card.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
+import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
+import 'package:bread_app/widgets/record/record_overview.dart';
 import 'package:flutter/material.dart';
 
 import 'record_new_bake_screen.dart';
@@ -16,8 +19,9 @@ class RecordBakeScreen extends StatelessWidget {
             icon: Icons.bookmark_border_rounded,
             text: "Record your Bake!",
           ),
-          OutlinedButton.icon(
-            onPressed: () {
+          const CustomSizedBox(),
+          CustomCard(
+            onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -25,9 +29,9 @@ class RecordBakeScreen extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(Icons.add_outlined),
-            label: const Text("Add a new record"),
-          )
+            child: const Icon(Icons.add_outlined),
+          ),
+          const RecordOverview()
         ],
       ),
     );

@@ -1,4 +1,4 @@
-import 'package:bread_app/utils/db_insert_helper.dart';
+import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/text_field_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
@@ -32,7 +32,7 @@ class RecordNewBakeScreen extends StatelessWidget {
           const CustomSizedBox(),
           ElevatedButton(
             onPressed: () async {
-              await DbInsertHelper().insertRecord(
+              await DbHelper().insertRecord(
                 _notesController.text,
                 DateTime.now().toIso8601String(),
                 DateTime.now().toIso8601String(),
