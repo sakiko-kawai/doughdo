@@ -1,5 +1,5 @@
 import 'package:bread_app/screens/bakers_percentage_screen.dart';
-import 'package:bread_app/screens/record_bake_screen.dart';
+import 'package:bread_app/screens/record_overview_screen.dart';
 import 'package:bread_app/screens/save_tips_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -37,7 +37,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const RecordBakeScreen(),
+                  builder: (context) => const RecordOverviewScreen(),
                 ),
               );
             },

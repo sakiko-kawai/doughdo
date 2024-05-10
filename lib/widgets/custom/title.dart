@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CustomTitle extends StatelessWidget {
-  final IconData icon;
+  final IconData? icon;
   final String text;
 
   const CustomTitle({
     Key? key,
-    required this.icon,
+    this.icon,
     required this.text,
   }) : super(key: key);
 

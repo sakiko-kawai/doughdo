@@ -4,9 +4,13 @@ import 'package:flutter/material.dart';
 class CustomScaffold extends StatelessWidget {
   final Widget child;
   final bool showBackButton;
+  final void Function()? onTapBackButton;
 
   const CustomScaffold(
-      {Key? key, required this.child, this.showBackButton = false})
+      {Key? key,
+      required this.child,
+      this.showBackButton = false,
+      this.onTapBackButton})
       : super(key: key);
 
   @override
@@ -28,9 +32,7 @@ class CustomScaffold extends StatelessWidget {
                   left: 0,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                    onPressed: onTapBackButton,
                   ),
                 ),
             ],

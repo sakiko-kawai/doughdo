@@ -14,6 +14,7 @@ class DbHelper {
   }
 
   Future<void> insertRecord(
+    String title,
     String notes,
     String createdAt,
     String updatedAt,
@@ -22,6 +23,7 @@ class DbHelper {
     await db.insert(
       'record',
       Record(
+        title: RecordTitle(title: title),
         notes: Notes(notes: notes),
         createdAt: CreatedAt(DateTime.parse(createdAt)),
         updatedAt: UpdatedAt(DateTime.parse(updatedAt)),
@@ -70,6 +72,7 @@ class DbHelper {
           '''
           CREATE TABLE record (
             id INTEGER PRIMARY KEY, 
+            title TEXT, 
             notes TEXT, 
             created_at TEXT, 
             updated_at TEXT

@@ -11,10 +11,13 @@ class CustomCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card.outlined(
-        child: SizedBox(
-          width: 300,
-          height: 100,
-          child: Center(child: child),
+        child: Padding(
+          padding: const EdgeInsets.all(5),
+          child: SizedBox(
+            width: 300,
+            height: 100,
+            child: Center(child: child),
+          ),
         ),
       ),
     );
