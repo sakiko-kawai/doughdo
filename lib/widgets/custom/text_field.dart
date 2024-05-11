@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'sized_box.dart';
 
@@ -21,20 +22,23 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            labelText: '$label ($unit)',
-            suffix: Text(unit),
-            counterText: "",
+        SizedBox(
+          width: 300,
+          child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              labelText: '$label ($unit)',
+              suffix: Text(unit),
+              counterText: "",
+            ),
+            onChanged: onChanged,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9.\b]')),
+            ],
+            maxLengthEnforcement: MaxLengthEnforcement.enforced,
+            maxLength: 6,
+            keyboardType: TextInputType.number,
           ),
-          onChanged: onChanged,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp(r'[0-9.\b]')),
-          ],
-          maxLengthEnforcement: MaxLengthEnforcement.enforced,
-          maxLength: 6,
-          keyboardType: TextInputType.number,
         ),
         const CustomSizedBox(),
       ],

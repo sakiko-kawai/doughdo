@@ -1,4 +1,4 @@
-import 'package:bread_app/screens/record_screen.dart';
+import 'package:bread_app/screens/record/record_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/widgets/custom/card.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
@@ -7,7 +7,7 @@ import 'package:bread_app/widgets/custom/title.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:flutter/material.dart';
 
-import 'record_new_bake_screen.dart';
+import 'record_create_screen.dart';
 
 class RecordOverviewScreen extends StatefulWidget {
   const RecordOverviewScreen({super.key});
@@ -48,7 +48,7 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RecordNewBakeScreen(),
+                  builder: (context) => RecordCreateScreen(),
                 ),
               );
             },
@@ -72,6 +72,8 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
                           ),
                           Text(
                             record.notes.notes,

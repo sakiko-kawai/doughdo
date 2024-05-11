@@ -5,6 +5,7 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DbHelper {
   static Database? _database;
+  String tableName = "record";
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -16,18 +17,35 @@ class DbHelper {
   Future<void> insertRecord(
     String title,
     String notes,
-    String createdAt,
-    String updatedAt,
   ) async {
     var db = await database;
     await db.insert(
-      'record',
+      tableName,
       Record(
         title: RecordTitle(title: title),
         notes: Notes(notes: notes),
-        createdAt: CreatedAt(DateTime.parse(createdAt)),
-        updatedAt: UpdatedAt(DateTime.parse(updatedAt)),
+        createdAt: CreatedAt(DateTime.now().toIso8601String()),
+        updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
       ).toMap(),
+    );
+  }
+
+  Future<void> updateRecord(
+    int recordId,
+    String title,
+    String notes,
+    CreatedAt createdAt,
+  ) async {
+    var db = await database;
+    await db.update(
+      tableName,
+      Record(
+        title: RecordTitle(title: title),
+        notes: Notes(notes: notes),
+        createdAt: createdAt,
+        updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
+      ).toMap(),
+      where: 'id = \'$recordId\'',
     );
   }
 
@@ -44,7 +62,7 @@ class DbHelper {
     final db = await database;
     String id = recordId.id.toString();
     List<Map<String, dynamic>> maps = await db.query(
-      'record',
+      tableName,
       where: 'id = \'$id\'',
     );
     if (maps.length > 1) {

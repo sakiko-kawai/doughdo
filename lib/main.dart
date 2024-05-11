@@ -22,7 +22,7 @@ class MyBreadApp extends StatelessWidget {
         useMaterial3: true,
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
-          constraints: BoxConstraints(maxWidth: 300),
+          constraints: BoxConstraints(maxWidth: 500),
         ),
       ),
       home: const BakersPercentageScreen(),

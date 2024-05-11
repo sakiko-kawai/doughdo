@@ -17,8 +17,8 @@ class Record {
     var map = <String, dynamic>{
       'title': title.title,
       'notes': notes.notes,
-      'created_at': createdAt.createdAt.toIso8601String(),
-      'updated_at': updatedAt.updatedAt.toIso8601String(),
+      'created_at': createdAt.createdAt,
+      'updated_at': updatedAt.updatedAt,
     };
 
     if (recordId != null) map['id'] = recordId?.id.toString();
@@ -31,8 +31,8 @@ class Record {
       recordId: RecordId(id: map['id']),
       title: RecordTitle(title: map['title']),
       notes: Notes(notes: map['notes']),
-      createdAt: CreatedAt(DateTime.parse(map['created_at'])),
-      updatedAt: UpdatedAt(DateTime.parse(map['updated_at'])),
+      createdAt: CreatedAt(map['created_at']),
+      updatedAt: UpdatedAt((map['updated_at'])),
     );
   }
 }
@@ -53,11 +53,11 @@ class Notes {
 }
 
 class CreatedAt {
-  final DateTime createdAt;
+  final String createdAt;
   const CreatedAt(this.createdAt);
 }
 
 class UpdatedAt {
-  final DateTime updatedAt;
+  final String updatedAt;
   const UpdatedAt(this.updatedAt);
 }
