@@ -3,6 +3,7 @@ import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/models/record.dart';
+import 'package:bread_app/widgets/record_delete_dialog.dart';
 import 'package:flutter/material.dart';
 
 class RecordScreen extends StatelessWidget {
@@ -42,7 +43,13 @@ class RecordScreen extends StatelessWidget {
                 ),
                 IconButton(
                   icon: const Icon(Icons.delete_outline_rounded),
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => RecordDeleteDialog(
+                              recordId: record.recordId!.id,
+                            ));
+                  },
                 ),
               ],
             ),

@@ -73,6 +73,14 @@ class DbHelper {
     return Record.fromMap(maps.first);
   }
 
+  Future<void> deleteRecord(int recordId) async {
+    var db = await database;
+    await db.delete(
+      tableName,
+      where: 'id = \'$recordId\'',
+    );
+  }
+
   Future<Database> initializeDatabase() async {
     WidgetsFlutterBinding.ensureInitialized();
     sqfliteFfiInit();
