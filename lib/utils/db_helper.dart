@@ -17,16 +17,22 @@ class DbHelper {
   Future<void> insertRecord(
     String title,
     String notes,
+    String? image,
   ) async {
     var db = await database;
+
+    Record record = Record(
+      title: RecordTitle(title: title),
+      notes: Notes(notes: notes),
+      createdAt: CreatedAt(DateTime.now().toIso8601String()),
+      updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
+    );
+    if (image != null) {
+      record.image = RecordImage(imagePath: image);
+    }
     await db.insert(
       tableName,
-      Record(
-        title: RecordTitle(title: title),
-        notes: Notes(notes: notes),
-        createdAt: CreatedAt(DateTime.now().toIso8601String()),
-        updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
-      ).toMap(),
+      record.toMap(),
     );
   }
 
@@ -100,6 +106,7 @@ class DbHelper {
             id INTEGER PRIMARY KEY, 
             title TEXT, 
             notes TEXT, 
+            image TEXT,
             created_at TEXT, 
             updated_at TEXT
             )

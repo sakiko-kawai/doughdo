@@ -2,13 +2,15 @@ class Record {
   final RecordId? recordId;
   final RecordTitle title;
   final Notes notes;
+  RecordImage? image;
   final CreatedAt createdAt;
   final UpdatedAt updatedAt;
 
-  const Record({
+  Record({
     this.recordId,
     required this.title,
     required this.notes,
+    this.image,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -22,18 +24,24 @@ class Record {
     };
 
     if (recordId != null) map['id'] = recordId?.id.toString();
+    if (image != null) map['image'] = image?.imagePath.toString();
 
     return map;
   }
 
   static Record fromMap(Map<String, dynamic> map) {
-    return Record(
+    var record = Record(
       recordId: RecordId(id: map['id']),
       title: RecordTitle(title: map['title']),
       notes: Notes(notes: map['notes']),
       createdAt: CreatedAt(map['created_at']),
       updatedAt: UpdatedAt((map['updated_at'])),
     );
+
+    if (map['image'] != null) {
+      record.image = RecordImage(imagePath: map['image']);
+    }
+    return record;
   }
 }
 
@@ -50,6 +58,11 @@ class RecordTitle {
 class Notes {
   final String notes;
   const Notes({required this.notes});
+}
+
+class RecordImage {
+  final String imagePath;
+  const RecordImage({required this.imagePath});
 }
 
 class CreatedAt {

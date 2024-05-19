@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bread_app/screens/record/record_edit_screen.dart';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
@@ -54,12 +56,15 @@ class RecordScreen extends StatelessWidget {
               ],
             ),
           ),
+          const CustomSizedBox(),
           Text(
             record.title.title,
             style: const TextStyle(fontSize: 22),
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
           ),
+          const CustomSizedBox(),
+          if (record.image != null) Image.file(File(record.image!.imagePath)),
           const CustomSizedBox(),
           ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 2000),
