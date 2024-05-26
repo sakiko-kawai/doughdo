@@ -10,22 +10,22 @@ import 'package:path_provider/path_provider.dart';
 
 class ImageHelper {
   Future<String> saveImage(XFile image) async {
-    final dir = await getApplicationSupportDirectory();
-    final savedImagePath = await getUniqueFilePath(dir.path, image.name);
-    final File file = File(image.path);
-    await file.copy(savedImagePath);
-
-    return savedImagePath;
+    return await cropAndSaveImage(image, false);
   }
 
   Future<String> createThumbnail(XFile image) async {
+   return await cropAndSaveImage(image, true);
+  }
+
+  Future<String> cropAndSaveImage(XFile image, bool isThumbnail) async {
     Image? decodedImage = await decodeImageFile(image.path);
     final dir = await getApplicationSupportDirectory();
-    final savedImagePath =
-        await getUniqueFilePath(dir.path, "thumbnail_${image.name}");
+    final imageName = isThumbnail ? "thumbnail_${image.name}" : image.name;
+    final savedImagePath = await getUniqueFilePath(dir.path, imageName);
 
     if (decodedImage != null) {
-      Image thumbnail = copyResizeCropSquare(decodedImage, size: 100);
+      final size = isThumbnail ? 100 : 400;
+      Image thumbnail = copyResizeCropSquare(decodedImage, size: size);
       encodeImageFile(savedImagePath, thumbnail);
     }
 

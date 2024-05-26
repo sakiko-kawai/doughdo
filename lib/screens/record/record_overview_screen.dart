@@ -8,6 +8,7 @@ import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'record_create_screen.dart';
 
@@ -89,10 +90,13 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 maxLines: 2,
                               ),
-                              Text(
-                                record.notes.notes,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 3,
+                              SizedBox(
+                                width: 180,
+                                child: Text(
+                                  record.notes.notes,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 3,
+                                ),
                               ),
                             ],
                           ),
