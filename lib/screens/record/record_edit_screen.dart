@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/screens/record/record_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
@@ -48,6 +50,12 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
             icon: Icons.bakery_dining_rounded,
             text: "Edit Record",
           ),
+          const CustomSizedBox(),
+          if (widget.record.image != null)
+            Image.file(
+              File(widget.record.image!.imagePath),
+              height: 150,
+            ),
           const CustomSizedBox(),
           TextField(
             controller: _titleController,

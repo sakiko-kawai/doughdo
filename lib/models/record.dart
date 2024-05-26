@@ -3,6 +3,7 @@ class Record {
   final RecordTitle title;
   final Notes notes;
   RecordImage? image;
+  RecordThumbnailImage? thumbnail;
   final CreatedAt createdAt;
   final UpdatedAt updatedAt;
 
@@ -11,6 +12,7 @@ class Record {
     required this.title,
     required this.notes,
     this.image,
+    this.thumbnail,
     required this.createdAt,
     required this.updatedAt,
   });
@@ -25,6 +27,7 @@ class Record {
 
     if (recordId != null) map['id'] = recordId?.id.toString();
     if (image != null) map['image'] = image?.imagePath.toString();
+    if (thumbnail != null) map['thumbnail'] = thumbnail?.imagePath.toString();
 
     return map;
   }
@@ -40,6 +43,10 @@ class Record {
 
     if (map['image'] != null) {
       record.image = RecordImage(imagePath: map['image']);
+    }
+
+    if (map['thumbnail'] != null) {
+      record.thumbnail = RecordThumbnailImage(imagePath: map['thumbnail']);
     }
     return record;
   }
@@ -63,6 +70,11 @@ class Notes {
 class RecordImage {
   final String imagePath;
   const RecordImage({required this.imagePath});
+}
+
+class RecordThumbnailImage {
+  final String imagePath;
+  const RecordThumbnailImage({required this.imagePath});
 }
 
 class CreatedAt {

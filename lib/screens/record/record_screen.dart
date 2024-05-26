@@ -64,7 +64,11 @@ class RecordScreen extends StatelessWidget {
             maxLines: 3,
           ),
           const CustomSizedBox(),
-          if (record.image != null) Image.file(File(record.image!.imagePath)),
+          if (record.image != null)
+            Image.file(
+              File(record.image!.imagePath),
+              height: 250,
+            ),
           const CustomSizedBox(),
           ConstrainedBox(
             constraints: const BoxConstraints(maxHeight: 2000),

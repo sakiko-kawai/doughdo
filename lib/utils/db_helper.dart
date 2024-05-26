@@ -1,5 +1,7 @@
 import 'package:bread_app/models/record.dart';
+import 'package:bread_app/utils/image_helper.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -17,10 +19,9 @@ class DbHelper {
   Future<void> insertRecord(
     String title,
     String notes,
-    String? image,
+    XFile? image,
+    XFile? thumbnailImage,
   ) async {
-    var db = await database;
-
     Record record = Record(
       title: RecordTitle(title: title),
       notes: Notes(notes: notes),
@@ -28,8 +29,17 @@ class DbHelper {
       updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
     );
     if (image != null) {
-      record.image = RecordImage(imagePath: image);
+      String? imagePath = await ImageHelper().saveImage(image);
+      record.image = RecordImage(imagePath: imagePath);
     }
+
+    if (thumbnailImage != null) {
+      String? thumbnailPath =
+          await ImageHelper().createThumbnail(thumbnailImage);
+      record.thumbnail = RecordThumbnailImage(imagePath: thumbnailPath);
+    }
+
+    var db = await database;
     await db.insert(
       tableName,
       record.toMap(),
@@ -80,6 +90,8 @@ class DbHelper {
   }
 
   Future<void> deleteRecord(int recordId) async {
+    await ImageHelper().deleteImage(recordId);
+
     var db = await database;
     await db.delete(
       tableName,
@@ -107,6 +119,7 @@ class DbHelper {
             title TEXT, 
             notes TEXT, 
             image TEXT,
+            thumbnail TEXT,
             created_at TEXT, 
             updated_at TEXT
             )

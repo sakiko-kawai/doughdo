@@ -1,6 +1,5 @@
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
-import 'package:bread_app/utils/image_helper.dart';
 import 'package:bread_app/utils/image_pick_helper.dart';
 import 'package:bread_app/utils/text_field_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
@@ -60,15 +59,11 @@ class RecordCreateScreen extends StatelessWidget {
           const CustomSizedBox(),
           ElevatedButton(
             onPressed: () async {
-              String? imagePath;
-              if (image != null) {
-                imagePath = await ImageHelper().saveImage(image!);
-              }
-
               await DbHelper().insertRecord(
                 _titleController.text,
                 _notesController.text,
-                imagePath,
+                image,
+                image,
               );
 
               debugPrint('one record inserted');

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bread_app/screens/record/record_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/widgets/custom/card.dart';
@@ -65,20 +67,34 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
                           ),
                         );
                       },
-                      child: Column(
+                      child: Row(
                         children: [
-                          Text(
-                            record.title.title,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
+                          if (record.thumbnail != null)
+                            Image.file(
+                              File(record.thumbnail!.imagePath),
+                              height: 100,
+                              width: 100,
                             ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                          const SizedBox(
+                            width: 5,
                           ),
-                          Text(
-                            record.notes.notes,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 3,
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                record.title.title,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                              ),
+                              Text(
+                                record.notes.notes,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+                              ),
+                            ],
                           ),
                         ],
                       ),
