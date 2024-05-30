@@ -1,6 +1,7 @@
+import 'dart:io';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
-import 'package:bread_app/utils/image_pick_helper.dart';
+import 'package:bread_app/utils/image_helper.dart';
 import 'package:bread_app/utils/text_field_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
@@ -9,13 +10,17 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../widgets/custom/title.dart';
 
-// ignore: must_be_immutable
-class RecordCreateScreen extends StatelessWidget {
-  RecordCreateScreen({super.key});
+class RecordCreateScreen extends StatefulWidget {
+  const RecordCreateScreen({super.key});
 
+  @override
+  State<RecordCreateScreen> createState() => _RecordCreateScreenState();
+}
+
+class _RecordCreateScreenState extends State<RecordCreateScreen> {
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
-  XFile? image;
+  List<XFile>? images;
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +44,46 @@ class RecordCreateScreen extends StatelessWidget {
             text: "Add New Record",
           ),
           const CustomSizedBox(),
-          IconButton(
-            onPressed: () async {
-              image = await ImagePickHelper().pickImage();
-            },
-            icon: const Icon(Icons.add_a_photo),
-          ),
+          if (images == null || images!.isEmpty)
+            IconButton(
+              onPressed: () async {
+                var pickedFiles = await ImageHelper().pickMultiImage();
+                setState(() {
+                  images = pickedFiles;
+                });
+              },
+              icon: const Icon(Icons.add_a_photo),
+            ),
+          if (images != null && images!.isNotEmpty)
+            SizedBox(
+              height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: List<Widget>.generate(
+                  images!.length,
+                  (index) => Row(
+                    children: [
+                      Image.file(
+                        File(images![index].path),
+                        height: 150,
+                      ),
+                      const CustomSizedBox(),
+                      if (index == images!.length - 1)
+                        IconButton(
+                          onPressed: () async {
+                            var pickedFiles =
+                                await ImageHelper().pickMultiImage();
+                            setState(() {
+                              images = pickedFiles;
+                            });
+                          },
+                          icon: const Icon(Icons.add_a_photo),
+                        ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           const CustomSizedBox(),
           TextField(
             controller: _titleController,
@@ -62,8 +101,8 @@ class RecordCreateScreen extends StatelessWidget {
               await DbHelper().insertRecord(
                 _titleController.text,
                 _notesController.text,
-                image,
-                image,
+                images,
+                images?[0],
               );
 
               debugPrint('one record inserted');

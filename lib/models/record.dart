@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 class Record {
   final RecordId? recordId;
   final RecordTitle title;
   final Notes notes;
-  RecordImage? image;
+  RecordImage? images;
   RecordThumbnailImage? thumbnail;
   final CreatedAt createdAt;
   final UpdatedAt updatedAt;
@@ -11,7 +13,7 @@ class Record {
     this.recordId,
     required this.title,
     required this.notes,
-    this.image,
+    this.images,
     this.thumbnail,
     required this.createdAt,
     required this.updatedAt,
@@ -26,8 +28,8 @@ class Record {
     };
 
     if (recordId != null) map['id'] = recordId?.id.toString();
-    if (image != null) map['image'] = image?.imagePath.toString();
-    if (thumbnail != null) map['thumbnail'] = thumbnail?.imagePath.toString();
+    if (images != null) map['images'] = jsonEncode(images?.imagePaths);
+    if (thumbnail != null) map['thumbnail'] = thumbnail?.imagePath;
 
     return map;
   }
@@ -41,8 +43,9 @@ class Record {
       updatedAt: UpdatedAt((map['updated_at'])),
     );
 
-    if (map['image'] != null) {
-      record.image = RecordImage(imagePath: map['image']);
+    if (map['images'] != null) {
+      record.images =
+          RecordImage(imagePaths: List<String>.from(jsonDecode(map['images'])));
     }
 
     if (map['thumbnail'] != null) {
@@ -68,8 +71,8 @@ class Notes {
 }
 
 class RecordImage {
-  final String imagePath;
-  const RecordImage({required this.imagePath});
+  final List<String> imagePaths;
+  const RecordImage({required this.imagePaths});
 }
 
 class RecordThumbnailImage {

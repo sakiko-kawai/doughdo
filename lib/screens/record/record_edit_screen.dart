@@ -33,6 +33,7 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
   Widget build(BuildContext context) {
     TextController.setController(_notesController, _notesController.text);
     TextController.setController(_titleController, _titleController.text);
+    final RecordImage? image = widget.record.images;
 
     return CustomScaffold(
       showBackButton: true,
@@ -51,10 +52,24 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
             text: "Edit Record",
           ),
           const CustomSizedBox(),
-          if (widget.record.image != null)
-            Image.file(
-              File(widget.record.image!.imagePath),
+          if (image != null)
+            SizedBox(
               height: 150,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: List<Widget>.generate(
+                  image.imagePaths.length,
+                  (index) => Row(
+                    children: [
+                      Image.file(
+                        File(image.imagePaths[index]),
+                        height: 150,
+                      ),
+                      const CustomSizedBox()
+                    ],
+                  ),
+                ),
+              ),
             ),
           const CustomSizedBox(),
           TextField(

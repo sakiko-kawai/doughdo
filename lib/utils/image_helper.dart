@@ -9,12 +9,27 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class ImageHelper {
-  Future<String> saveImage(XFile image) async {
-    return await cropAndSaveImage(image, false);
+  static double imageSize = 250;
+  static double thumbnailSize = 100;
+
+  final ImagePicker _picker = ImagePicker();
+
+  Future<List<XFile>?> pickMultiImage() async {
+    final pickedFiles = await _picker.pickMultiImage(limit: 3);
+    return pickedFiles;
+  }
+
+  Future<List<String>> saveImages(List<XFile> images) async {
+    List<String> paths = [];
+    for (var image in images) {
+      var path = await cropAndSaveImage(image, false);
+      paths.add(path);
+    }
+    return paths;
   }
 
   Future<String> createThumbnail(XFile image) async {
-   return await cropAndSaveImage(image, true);
+    return await cropAndSaveImage(image, true);
   }
 
   Future<String> cropAndSaveImage(XFile image, bool isThumbnail) async {
@@ -24,9 +39,9 @@ class ImageHelper {
     final savedImagePath = await getUniqueFilePath(dir.path, imageName);
 
     if (decodedImage != null) {
-      final size = isThumbnail ? 100 : 400;
-      Image thumbnail = copyResizeCropSquare(decodedImage, size: size);
-      encodeImageFile(savedImagePath, thumbnail);
+      final size = isThumbnail ? thumbnailSize.toInt() : imageSize.toInt();
+      Image image = copyResizeCropSquare(decodedImage, size: size);
+      encodeImageFile(savedImagePath, image);
     }
 
     return savedImagePath;
@@ -57,9 +72,11 @@ class ImageHelper {
       }
     }
 
-    if (record.image?.imagePath != null) {
+    if (record.images?.imagePaths != null) {
       try {
-        await File(record.image!.imagePath).delete();
+        for (var image in record.images!.imagePaths) {
+          await File(image).delete();
+        }
       } on PathNotFoundException catch (_) {
         debugPrint("Failed to delete image.");
       }

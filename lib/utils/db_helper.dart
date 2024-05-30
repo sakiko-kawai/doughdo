@@ -19,7 +19,7 @@ class DbHelper {
   Future<void> insertRecord(
     String title,
     String notes,
-    XFile? image,
+    List<XFile>? images,
     XFile? thumbnailImage,
   ) async {
     Record record = Record(
@@ -28,9 +28,9 @@ class DbHelper {
       createdAt: CreatedAt(DateTime.now().toIso8601String()),
       updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
     );
-    if (image != null) {
-      String? imagePath = await ImageHelper().saveImage(image);
-      record.image = RecordImage(imagePath: imagePath);
+    if (images != null) {
+      List<String>? imagePaths = await ImageHelper().saveImages(images);
+      record.images = RecordImage(imagePaths: imagePaths);
     }
 
     if (thumbnailImage != null) {
@@ -103,7 +103,6 @@ class DbHelper {
     WidgetsFlutterBinding.ensureInitialized();
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
-    debugPrint(await getDatabasesPath());
     String dbPath = join(await getDatabasesPath(), 'local.db');
 
     _database = await openDatabase(
@@ -118,7 +117,7 @@ class DbHelper {
             id INTEGER PRIMARY KEY, 
             title TEXT, 
             notes TEXT, 
-            image TEXT,
+            images TEXT,
             thumbnail TEXT,
             created_at TEXT, 
             updated_at TEXT

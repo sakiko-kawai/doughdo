@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bread_app/screens/record/record_edit_screen.dart';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
+import 'package:bread_app/utils/image_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/models/record.dart';
@@ -14,6 +15,7 @@ class RecordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String>? paths = record.images?.imagePaths;
     return CustomScaffold(
       showBackButton: true,
       onTapBackButton: () {
@@ -64,10 +66,24 @@ class RecordScreen extends StatelessWidget {
             maxLines: 3,
           ),
           const CustomSizedBox(),
-          if (record.image != null)
-            Image.file(
-              File(record.image!.imagePath),
-              height: 250,
+          if (record.images != null)
+            SizedBox(
+              height: ImageHelper.imageSize,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: List<Widget>.generate(
+                  paths!.length,
+                  (index) => Row(
+                    children: [
+                      Image.file(
+                        File(paths[index]),
+                        height: ImageHelper.imageSize,
+                      ),
+                      const CustomSizedBox()
+                    ],
+                  ),
+                ),
+              ),
             ),
           const CustomSizedBox(),
           ConstrainedBox(
