@@ -30,7 +30,7 @@ class DbHelper {
     );
     if (images != null) {
       List<String>? imagePaths = await ImageHelper().saveImages(images);
-      record.images = RecordImage(imagePaths: imagePaths);
+      record.images = RecordImages(imagePaths: imagePaths);
     }
 
     if (thumbnailImage != null) {
@@ -50,17 +50,21 @@ class DbHelper {
     int recordId,
     String title,
     String notes,
+    RecordImages? originalImages,
+    RecordImages? newImages,
     CreatedAt createdAt,
   ) async {
+    var record = Record(
+      title: RecordTitle(title: title),
+      notes: Notes(notes: notes),
+      createdAt: createdAt,
+      updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
+    ).toMap();
+
     var db = await database;
     await db.update(
       tableName,
-      Record(
-        title: RecordTitle(title: title),
-        notes: Notes(notes: notes),
-        createdAt: createdAt,
-        updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
-      ).toMap(),
+      record,
       where: 'id = \'$recordId\'',
     );
   }

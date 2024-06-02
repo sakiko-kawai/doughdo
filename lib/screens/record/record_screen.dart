@@ -2,11 +2,12 @@ import 'dart:io';
 
 import 'package:bread_app/screens/record/record_edit_screen.dart';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
+import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/image_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/models/record.dart';
-import 'package:bread_app/widgets/record_delete_dialog.dart';
+import 'package:bread_app/widgets/record/record_delete_dialog.dart';
 import 'package:flutter/material.dart';
 
 class RecordScreen extends StatelessWidget {
@@ -16,6 +17,26 @@ class RecordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<String>? paths = record.images?.imagePaths;
+
+    void onDelete() {
+      showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => DeleteDialog(
+                onConfirm: () async {
+                  await DbHelper().deleteRecord(record.recordId!.id);
+
+                  if (!context.mounted) return;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RecordOverviewScreen(),
+                    ),
+                  );
+                },
+                text: 'Are you sure you want to delete this record?',
+              ));
+    }
+
     return CustomScaffold(
       showBackButton: true,
       onTapBackButton: () {
@@ -48,11 +69,7 @@ class RecordScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.delete_outline_rounded),
                   onPressed: () {
-                    showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => RecordDeleteDialog(
-                              recordId: record.recordId!.id,
-                            ));
+                    onDelete();
                   },
                 ),
               ],

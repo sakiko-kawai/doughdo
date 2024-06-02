@@ -45,6 +45,25 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
     TextController.setController(_notesController, _notesController.text);
     TextController.setController(_titleController, _titleController.text);
 
+    Future<void> onSave() async {
+      await DbHelper().insertRecord(
+        _titleController.text,
+        _notesController.text,
+        images.isEmpty ? null : images,
+        images.isEmpty ? null : images[0],
+      );
+
+      debugPrint('one record inserted');
+
+      if (!context.mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RecordOverviewScreen(),
+        ),
+      );
+    }
+
     return CustomScaffold(
       showBackButton: true,
       onTapBackButton: () {
@@ -101,22 +120,7 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
           const CustomSizedBox(),
           ElevatedButton(
             onPressed: () async {
-              await DbHelper().insertRecord(
-                _titleController.text,
-                _notesController.text,
-                images.isEmpty ? null : images,
-                images.isEmpty ? null : images[0],
-              );
-
-              debugPrint('one record inserted');
-
-              if (!context.mounted) return;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RecordOverviewScreen(),
-                ),
-              );
+              await onSave();
             },
             child: const Text("Save"),
           )

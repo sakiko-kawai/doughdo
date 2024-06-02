@@ -1,10 +1,9 @@
-import 'package:bread_app/screens/record/record_overview_screen.dart';
-import 'package:bread_app/utils/db_helper.dart';
 import 'package:flutter/material.dart';
 
-class RecordDeleteDialog extends StatelessWidget {
-  final int recordId;
-  const RecordDeleteDialog({Key? key, required this.recordId})
+class DeleteDialog extends StatelessWidget {
+  final void Function()? onConfirm;
+  final String text;
+  const DeleteDialog({Key? key, required this.onConfirm, required this.text})
       : super(key: key);
 
   @override
@@ -16,22 +15,12 @@ class RecordDeleteDialog extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Are you sure you want to delete this record?'),
+            Text(text),
             const SizedBox(height: 15),
             Row(
               children: [
                 TextButton(
-                  onPressed: () async {
-                    await DbHelper().deleteRecord(recordId);
-
-                    if (!context.mounted) return;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const RecordOverviewScreen(),
-                      ),
-                    );
-                  },
+                  onPressed: onConfirm,
                   child: const Text('Delete'),
                 ),
                 TextButton(

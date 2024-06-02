@@ -4,7 +4,7 @@ class Record {
   final RecordId? recordId;
   final RecordTitle title;
   final Notes notes;
-  RecordImage? images;
+  RecordImages? images;
   RecordThumbnailImage? thumbnail;
   final CreatedAt createdAt;
   final UpdatedAt updatedAt;
@@ -45,7 +45,7 @@ class Record {
 
     if (map['images'] != null) {
       record.images =
-          RecordImage(imagePaths: List<String>.from(jsonDecode(map['images'])));
+          RecordImages(imagePaths: List<String>.from(jsonDecode(map['images'])));
     }
 
     if (map['thumbnail'] != null) {
@@ -70,9 +70,9 @@ class Notes {
   const Notes({required this.notes});
 }
 
-class RecordImage {
+class RecordImages {
   final List<String> imagePaths;
-  const RecordImage({required this.imagePaths});
+  const RecordImages({required this.imagePaths});
 }
 
 class RecordThumbnailImage {
