@@ -1,7 +1,7 @@
+import 'package:bread_app/models/image.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/image_helper.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
@@ -19,8 +19,8 @@ class DbHelper {
   Future<void> insertRecord(
     String title,
     String notes,
-    List<XFile>? images,
-    XFile? thumbnailImage,
+    List<CustomImage>? images,
+    CustomImage? thumbnailImage,
   ) async {
     Record record = Record(
       title: RecordTitle(title: title),

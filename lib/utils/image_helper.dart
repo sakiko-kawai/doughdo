@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bread_app/models/image.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:flutter/material.dart' hide Image;
@@ -15,36 +16,43 @@ class ImageHelper {
   final ImagePicker _picker = ImagePicker();
 
   Future<List<XFile>?> pickMultiImage() async {
-    final pickedFiles = await _picker.pickMultiImage(limit: 3);
+    final pickedFiles = await _picker.pickMultiImage();
     return pickedFiles;
   }
 
-  Future<List<String>> saveImages(List<XFile> images) async {
+  Future<List<String>> saveImages(List<CustomImage> images) async {
     List<String> paths = [];
     for (var image in images) {
-      var path = await cropAndSaveImage(image, false);
+      var path = await cropAndSaveImage(image.pickedImage!, false);
       paths.add(path);
     }
     return paths;
   }
 
-  Future<String> createThumbnail(XFile image) async {
-    return await cropAndSaveImage(image, true);
+  Future<String> createThumbnail(CustomImage image) async {
+    return await cropAndSaveImage(image.pickedImage!, true);
   }
 
   Future<String> cropAndSaveImage(XFile image, bool isThumbnail) async {
-    Image? decodedImage = await decodeImageFile(image.path);
     final dir = await getApplicationSupportDirectory();
     final imageName = isThumbnail ? "thumbnail_${image.name}" : image.name;
     final savedImagePath = await getUniqueFilePath(dir.path, imageName);
 
-    if (decodedImage != null) {
-      final size = isThumbnail ? thumbnailSize.toInt() : imageSize.toInt();
-      Image image = copyResizeCropSquare(decodedImage, size: size);
-      encodeImageFile(savedImagePath, image);
-    }
+    Image croppedImage = await cropImage(image, isThumbnail);
+    encodeImageFile(savedImagePath, croppedImage);
 
     return savedImagePath;
+  }
+
+  Future<Image> cropImage(XFile image, bool isThumbnail) async {
+    Image? decodedImage = await decodeImageFile(image.path);
+    Image croppedImage = Image.empty();
+    if (decodedImage != null) {
+      final size = isThumbnail ? thumbnailSize.toInt() : imageSize.toInt();
+      croppedImage = copyResizeCropSquare(decodedImage, size: size);
+    }
+
+    return croppedImage;
   }
 
   Future<String> getUniqueFilePath(String directory, String filename) async {

@@ -51,7 +51,7 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RecordCreateScreen(),
+                  builder: (context) => const RecordCreateScreen(),
                 ),
               );
             },
