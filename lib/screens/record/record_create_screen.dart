@@ -1,8 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:bread_app/models/image.dart';
+import 'package:bread_app/widgets/record/record_edit_image.dart';
 import 'package:flutter/widgets.dart';
-import 'package:image/image.dart' as img;
+import 'package:image/image.dart' as img_pkg;
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/image_helper.dart';
@@ -36,7 +37,9 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
     }
 
     setState(() {
-      images = croppedImages;
+      for (var img in croppedImages) {
+        images.add(img);
+      }
     });
   }
 
@@ -64,6 +67,39 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
       );
     }
 
+    List<Widget> imageWidgets = List.empty(growable: true);
+    void setImageWidgets() {
+      if (images.isNotEmpty) {
+        for (var img in images) {
+          imageWidgets.add(EditImage(
+            imageWidget: Image.memory(
+              Uint8List.fromList(img_pkg.encodePng(img.image!)),
+              height: 150,
+            ),
+            onDelete: () {
+              setState(() {
+                images.remove(img);
+              });
+            },
+          ));
+        }
+      }
+      imageWidgets.add(Card.outlined(
+        child: SizedBox(
+          width: 150,
+          height: 150,
+          child: IconButton(
+            onPressed: () {
+              pickAndCropImage();
+            },
+            icon: const Icon(Icons.add_a_photo),
+          ),
+        ),
+      ));
+    }
+
+    setImageWidgets();
+
     return CustomScaffold(
       showBackButton: true,
       onTapBackButton: () {
@@ -81,31 +117,16 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
             text: "Add New Record",
           ),
           const CustomSizedBox(),
-          if (images.isEmpty) //TODO: separate in different widget
-            IconButton(
-              onPressed: () async {
-                await pickAndCropImage();
+          SizedBox(
+            height: 150,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: imageWidgets.length,
+              itemBuilder: (context, index) {
+                return imageWidgets[index];
               },
-              icon: const Icon(Icons.add_a_photo),
             ),
-          if (images.isNotEmpty)
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: images.length,
-                itemBuilder: (context, index) {
-                  return Row(children: [
-                    if (images[index].image != null)
-                      Image.memory(
-                        Uint8List.fromList(img.encodePng(images[index].image!)),
-                        height: 150,
-                      ),
-                    const CustomSizedBox(),
-                  ]);
-                },
-              ),
-            ),
+          ),
           const CustomSizedBox(),
           TextField(
             controller: _titleController,
