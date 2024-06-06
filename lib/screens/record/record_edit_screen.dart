@@ -52,6 +52,7 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
         _notesController.text,
         originalImages,
         newImages,
+        toBeAddedImages,
         widget.record.createdAt,
       ); //TODO: update images
       debugPrint('one record edited');

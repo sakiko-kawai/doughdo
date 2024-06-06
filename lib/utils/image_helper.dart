@@ -70,7 +70,7 @@ class ImageHelper {
     return filePath;
   }
 
-  Future<void> deleteImage(int recordId) async {
+  Future<void> deleteImageOnRecord(int recordId) async {
     var record = await DbHelper().getRecordById(RecordId(id: recordId));
     if (record.thumbnail?.imagePath != null) {
       try {
@@ -88,6 +88,16 @@ class ImageHelper {
       } on PathNotFoundException catch (_) {
         debugPrint("Failed to delete image.");
       }
+    }
+  }
+
+  Future<void> deleteImages(RecordImages recordImgs) async {
+    try {
+      for (var image in recordImgs.imagePaths) {
+        await File(image).delete();
+      }
+    } on PathNotFoundException catch (_) {
+      debugPrint("Failed to delete image.");
     }
   }
 }
