@@ -1,17 +1,18 @@
 import 'dart:io';
-
-import 'package:bread_app/models/image.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/db_helper.dart';
-import 'package:flutter/material.dart' hide Image;
-import 'package:image/image.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ImageHelper {
   static double imageSize = 250;
+  static double imageEditSize = 150;
   static double thumbnailSize = 100;
+  String recordImagebucketName = "record-image";
+  final supabase = Supabase.instance.client;
 
   final ImagePicker _picker = ImagePicker();
 
@@ -20,39 +21,52 @@ class ImageHelper {
     return pickedFiles;
   }
 
-  Future<List<String>> saveImages(List<CustomImage> images) async {
+  Future<List<String>> saveImages(List<XFile> images) async {
     List<String> paths = [];
     for (var image in images) {
-      var path = await cropAndSaveImage(image.pickedImage!, false);
-      paths.add(path);
+      String path = await supabase.storage.from(recordImagebucketName).upload(
+            await getUniqueFilePath("username", image.name),
+            File(image.path),
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
+
+      String cleanPath = getPathWithoutBucketName(path);
+      paths.add(cleanPath);
     }
     return paths;
   }
 
-  Future<String> createThumbnail(CustomImage image) async {
-    return await cropAndSaveImage(image.pickedImage!, true);
+  String getPathWithoutBucketName(String path) {
+    List<String> segments = List.from(Uri.parse(path).pathSegments);
+    segments.removeAt(0);
+    return segments.join('/');
   }
 
-  Future<String> cropAndSaveImage(XFile image, bool isThumbnail) async {
-    final dir = await getApplicationSupportDirectory();
-    final imageName = isThumbnail ? "thumbnail_${image.name}" : image.name;
-    final savedImagePath = await getUniqueFilePath(dir.path, imageName);
-
-    Image croppedImage = await cropImage(image, isThumbnail);
-    encodeImageFile(savedImagePath, croppedImage);
-
-    return savedImagePath;
+  Future<CroppedFile?> cropImage(XFile image, BuildContext context) async {
+    return await ImageCropper().cropImage(
+      sourcePath: image.path,
+      maxHeight: imageSize.toInt(),
+      maxWidth: imageSize.toInt(),
+      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.deepOrange,
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.square,
+        ),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(context: context)
+      ],
+    );
   }
 
-  Future<Image> cropImage(XFile image, bool isThumbnail) async {
-    Image? decodedImage = await decodeImageFile(image.path);
-    Image croppedImage = Image.empty();
-    if (decodedImage != null) {
-      final size = isThumbnail ? thumbnailSize.toInt() : imageSize.toInt();
-      croppedImage = copyResizeCropSquare(decodedImage, size: size);
-    }
-
-    return croppedImage;
+  Future<String> getImageUrl(String path) async {
+    return await supabase.storage
+        .from(recordImagebucketName)
+        .createSignedUrl(path, 60);
   }
 
   Future<String> getUniqueFilePath(String directory, String filename) async {
@@ -74,7 +88,9 @@ class ImageHelper {
     var record = await DbHelper().getRecordById(RecordId(id: recordId));
     if (record.thumbnail?.imagePath != null) {
       try {
-        await File(record.thumbnail!.imagePath).delete();
+        await supabase.storage
+            .from(recordImagebucketName)
+            .remove([record.thumbnail!.imagePath]);
       } on PathNotFoundException catch (_) {
         debugPrint("Failed to delete image.");
       }
@@ -83,7 +99,7 @@ class ImageHelper {
     if (record.images?.imagePaths != null) {
       try {
         for (var image in record.images!.imagePaths) {
-          await File(image).delete();
+          await supabase.storage.from(recordImagebucketName).remove([image]);
         }
       } on PathNotFoundException catch (_) {
         debugPrint("Failed to delete image.");
@@ -94,7 +110,7 @@ class ImageHelper {
   Future<void> deleteImages(RecordImages recordImgs) async {
     try {
       for (var image in recordImgs.imagePaths) {
-        await File(image).delete();
+        await supabase.storage.from(recordImagebucketName).remove([image]);
       }
     } on PathNotFoundException catch (_) {
       debugPrint("Failed to delete image.");

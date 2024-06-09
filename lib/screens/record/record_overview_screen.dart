@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bread_app/screens/record/record_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/image_helper.dart';
@@ -8,6 +6,7 @@ import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
 import 'package:bread_app/models/record.dart';
+import 'package:bread_app/widgets/record/record_load_image.dart';
 import 'package:flutter/material.dart';
 
 import 'record_create_screen.dart';
@@ -71,10 +70,9 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
                       child: Row(
                         children: [
                           if (record.thumbnail != null)
-                            Image.file(
-                              File(record.thumbnail!.imagePath),
-                              height: ImageHelper.thumbnailSize,
-                              width: ImageHelper.thumbnailSize,
+                            LoadImage(
+                              path: record.thumbnail!.imagePath,
+                              size: ImageHelper.thumbnailSize,
                             ),
                           const SizedBox(
                             width: 5,

@@ -44,8 +44,8 @@ class Record {
     );
 
     if (map['images'] != null) {
-      record.images =
-          RecordImages(imagePaths: List<String>.from(jsonDecode(map['images'])));
+      record.images = RecordImages(
+          imagePaths: List<String>.from(jsonDecode(map['images'])));
     }
 
     if (map['thumbnail'] != null) {

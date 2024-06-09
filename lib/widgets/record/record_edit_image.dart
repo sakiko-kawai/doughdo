@@ -5,8 +5,7 @@ class EditImage extends StatelessWidget {
   final void Function()? onDelete;
   final Widget imageWidget;
 
-  const EditImage({Key? key, required this.onDelete, required this.imageWidget})
-      : super(key: key);
+  const EditImage({super.key, required this.onDelete, required this.imageWidget});
 
   @override
   Widget build(BuildContext context) {

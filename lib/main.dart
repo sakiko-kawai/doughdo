@@ -1,12 +1,14 @@
 import 'package:bread_app/screens/bakers_percentage_screen.dart';
-import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+const supabaseUrl = 'https://dwgmzsnquakzdzcvxmxh.supabase.co';
+const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
 
 void main() async {
-  await DbHelper().database;
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
   await SpHelper().prefs;
-
   runApp(const MyBreadApp());
 }
 

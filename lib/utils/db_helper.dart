@@ -1,26 +1,18 @@
-import 'package:bread_app/models/image.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/image_helper.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DbHelper {
-  static Database? _database;
   String tableName = "record";
-
-  Future<Database> get database async {
-    if (_database != null) return _database!;
-
-    _database = await initializeDatabase();
-    return _database!;
-  }
+  final supabase = Supabase.instance.client;
 
   Future<void> insertRecord(
     String title,
     String notes,
-    List<CustomImage>? images,
-    CustomImage? thumbnailImage,
+    List<XFile>? images,
+    XFile? thumbnailImage,
   ) async {
     Record record = Record(
       title: RecordTitle(title: title),
@@ -31,19 +23,10 @@ class DbHelper {
     if (images != null) {
       List<String>? imagePaths = await ImageHelper().saveImages(images);
       record.images = RecordImages(imagePaths: imagePaths);
+      record.thumbnail = RecordThumbnailImage(imagePath: imagePaths[0]);
     }
 
-    if (thumbnailImage != null) {
-      String? thumbnailPath =
-          await ImageHelper().createThumbnail(thumbnailImage);
-      record.thumbnail = RecordThumbnailImage(imagePath: thumbnailPath);
-    }
-
-    var db = await database;
-    await db.insert(
-      tableName,
-      record.toMap(),
-    );
+    await supabase.from(tableName).insert(record.toMap());
   }
 
   Future<void> updateRecord(
@@ -52,7 +35,7 @@ class DbHelper {
     String notes,
     RecordImages? originalImages,
     RecordImages? newImages,
-    List<CustomImage>? toBeAddedImages,
+    List<XFile>? toBeAddedImages,
     CreatedAt createdAt,
   ) async {
     Record record = Record(
@@ -66,18 +49,13 @@ class DbHelper {
         await getUpdatedImages(originalImages, newImages, toBeAddedImages);
     record.images = updatedImgs;
 
-    var db = await database;
-    await db.update(
-      tableName,
-      record.toMap(),
-      where: 'id = \'$recordId\'',
-    );
+    await supabase.from(tableName).update(record.toMap()).eq('id', recordId);
   }
 
   Future<RecordImages?> getUpdatedImages(
     RecordImages? originalImages,
     RecordImages? newImages,
-    List<CustomImage>? toBeAddedImages,
+    List<XFile>? toBeAddedImages,
   ) async {
     RecordImages? toBeDeleted;
     if (originalImages != null) {
@@ -99,6 +77,7 @@ class DbHelper {
 
     RecordImages? toBeAdded;
     if (toBeAddedImages != null) {
+      debugPrint("is good");
       List<String>? imagePaths =
           await ImageHelper().saveImages(toBeAddedImages);
       toBeAdded = RecordImages(imagePaths: imagePaths);
@@ -107,6 +86,7 @@ class DbHelper {
     RecordImages? updatedImages;
     if (newImages != null) {
       if (toBeAdded != null) {
+        debugPrint("add lists");
         updatedImages = RecordImages(
             imagePaths: newImages.imagePaths + toBeAdded.imagePaths);
       } else {
@@ -119,25 +99,20 @@ class DbHelper {
         updatedImages = null;
       }
     }
+    debugPrint(updatedImages!.imagePaths.length.toString());
     return updatedImages;
   }
 
   Future<List<Record>> getAllRecords() async {
-    final db = await database;
-    List<Map<String, dynamic>> maps = await db.query('record');
-    List<Record> records =
-        maps.map((record) => Record.fromMap(record)).toList();
-
+    var maps = await supabase.from(tableName).select("*");
+    List<Record> records = maps.map((r) => Record.fromMap(r)).toList();
     return records;
   }
 
   Future<Record> getRecordById(RecordId recordId) async {
-    final db = await database;
     String id = recordId.id.toString();
-    List<Map<String, dynamic>> maps = await db.query(
-      tableName,
-      where: 'id = \'$id\'',
-    );
+    List<Map<String, dynamic>> maps =
+        await supabase.from(tableName).select("*").eq("id", id);
     if (maps.length > 1) {
       debugPrint('There are more than one record that matches the RecordId.');
     } else if (maps.isEmpty) {
@@ -149,48 +124,6 @@ class DbHelper {
   Future<void> deleteRecord(int recordId) async {
     await ImageHelper().deleteImageOnRecord(recordId);
 
-    var db = await database;
-    await db.delete(
-      tableName,
-      where: 'id = \'$recordId\'',
-    );
-  }
-
-  Future<Database> initializeDatabase() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-    String dbPath = join(await getDatabasesPath(), 'local.db');
-
-    _database = await openDatabase(
-      dbPath,
-      version: 1,
-      onCreate: (db, version) async {
-        debugPrint("create database");
-
-        await db.execute(
-          '''
-          CREATE TABLE record (
-            id INTEGER PRIMARY KEY, 
-            title TEXT, 
-            notes TEXT, 
-            images TEXT,
-            thumbnail TEXT,
-            created_at TEXT, 
-            updated_at TEXT
-            )
-          ''',
-        );
-      },
-    );
-
-    return _database!;
-  }
-
-  Future close() async {
-    if (_database != null) {
-      await _database!.close();
-      _database = null;
-    }
+    await supabase.from(tableName).delete().eq("id", recordId);
   }
 }

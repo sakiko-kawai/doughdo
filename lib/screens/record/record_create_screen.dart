@@ -1,16 +1,14 @@
-import 'dart:typed_data';
-
-import 'package:bread_app/models/image.dart';
+import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:bread_app/widgets/record/record_edit_image.dart';
-import 'package:flutter/widgets.dart';
-import 'package:image/image.dart' as img_pkg;
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/image_helper.dart';
 import 'package:bread_app/utils/text_field_helper.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
-import 'package:flutter/material.dart' hide Image;
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../widgets/custom/title.dart';
 
@@ -24,15 +22,16 @@ class RecordCreateScreen extends StatefulWidget {
 class _RecordCreateScreenState extends State<RecordCreateScreen> {
   final TextEditingController _notesController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
-  List<CustomImage> images = List.empty(growable: true);
+  List<XFile> images = List.empty(growable: true);
 
   Future<void> pickAndCropImage() async {
     var pickedFiles = await ImageHelper().pickMultiImage();
-    List<CustomImage> croppedImages = List.empty(growable: true);
+    List<XFile> croppedImages = List.empty(growable: true);
     if (pickedFiles != null) {
       for (var file in pickedFiles) {
-        var croppedImage = await ImageHelper().cropImage(file, false);
-        croppedImages.add(CustomImage(pickedImage: file, image: croppedImage));
+        CroppedFile? croppedImage =
+            await ImageHelper().cropImage(file, context);
+        croppedImages.add(XFile(croppedImage!.path));
       }
     }
 
@@ -72,8 +71,8 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
       if (images.isNotEmpty) {
         for (var img in images) {
           imageWidgets.add(EditImage(
-            imageWidget: Image.memory(
-              Uint8List.fromList(img_pkg.encodePng(img.image!)),
+            imageWidget: Image.file(
+              File(img.path),
               height: 150,
             ),
             onDelete: () {

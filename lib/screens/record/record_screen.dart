@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:bread_app/screens/record/record_edit_screen.dart';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
@@ -8,11 +6,12 @@ import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/widgets/record/record_delete_dialog.dart';
+import 'package:bread_app/widgets/record/record_load_image.dart';
 import 'package:flutter/material.dart';
 
 class RecordScreen extends StatelessWidget {
   final Record record;
-  const RecordScreen({Key? key, required this.record}) : super(key: key);
+  const RecordScreen({super.key, required this.record});
 
   @override
   Widget build(BuildContext context) {
@@ -85,21 +84,21 @@ class RecordScreen extends StatelessWidget {
           const CustomSizedBox(),
           if (record.images != null)
             SizedBox(
-              height: ImageHelper.imageSize,
-              child: ListView(
+              height: ImageHelper.imageSize.toDouble(),
+              child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: List<Widget>.generate(
-                  paths!.length,
-                  (index) => Row(
+                itemCount: paths!.length,
+                itemBuilder: (context, index) {
+                  return Row(
                     children: [
-                      Image.file(
-                        File(paths[index]),
-                        height: ImageHelper.imageSize,
+                      LoadImage(
+                        path: paths[index],
+                        size: ImageHelper.imageSize,
                       ),
-                      const CustomSizedBox()
+                      const CustomSizedBox(),
                     ],
-                  ),
-                ),
+                  );
+                },
               ),
             ),
           const CustomSizedBox(),
