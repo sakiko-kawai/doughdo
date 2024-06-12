@@ -5,10 +5,10 @@ class CustomTitle extends StatelessWidget {
   final String text;
 
   const CustomTitle({
-    Key? key,
+    super.key,
     this.icon,
     required this.text,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

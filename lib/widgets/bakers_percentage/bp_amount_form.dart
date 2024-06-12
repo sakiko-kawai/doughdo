@@ -18,6 +18,7 @@ class BpAmountForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bpState = context.watch<BakersPercentageState>();
+    final prefs = SpHelper();
 
     TextController.setController(_flourController, bpState.flourAmount);
     TextController.setController(_waterController, bpState.waterAmount);
@@ -32,7 +33,7 @@ class BpAmountForm extends StatelessWidget {
         onChanged: (value) {
           bpState.flourAmount = value;
           _flourController.text = bpState.flourAmount;
-          SpHelper().save(BpKey().flourAmount, value);
+          prefs.saveString(BpKey().flourAmount, value);
         },
       ),
       CustomTextField(
@@ -42,7 +43,7 @@ class BpAmountForm extends StatelessWidget {
         onChanged: (value) {
           bpState.waterAmount = value;
           _waterController.text = bpState.waterAmount;
-          SpHelper().save(BpKey().waterAmount, value);
+          prefs.saveString(BpKey().waterAmount, value);
         },
       ),
       CustomTextField(
@@ -52,7 +53,7 @@ class BpAmountForm extends StatelessWidget {
         onChanged: (value) {
           bpState.starterAmount = value;
           _starterController.text = bpState.starterAmount;
-          SpHelper().save(BpKey().starterAmount, value);
+          prefs.saveString(BpKey().starterAmount, value);
         },
       ),
       CustomTextField(
@@ -62,7 +63,7 @@ class BpAmountForm extends StatelessWidget {
         onChanged: (value) {
           bpState.saltAmount = value;
           _saltController.text = bpState.saltAmount;
-          SpHelper().save(BpKey().saltAmount, value);
+          prefs.saveString(BpKey().saltAmount, value);
         },
       ),
     ]);

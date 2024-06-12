@@ -15,6 +15,7 @@ class BpSettingsForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bpState = context.watch<BakersPercentageState>();
+    final prefs = SpHelper();
 
     TextController.setController(_hydratonController, bpState.starterHydration);
 
@@ -26,7 +27,7 @@ class BpSettingsForm extends StatelessWidget {
         onChanged: (value) {
           bpState.starterHydration = value;
           _hydratonController.text = bpState.starterHydration;
-          SpHelper().save(BpKey().starterHydration, value);
+          prefs.saveString(BpKey().starterHydration, value);
         },
       ),
     ]);

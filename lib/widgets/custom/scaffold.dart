@@ -7,11 +7,10 @@ class CustomScaffold extends StatelessWidget {
   final void Function()? onTapBackButton;
 
   const CustomScaffold(
-      {Key? key,
+      {super.key,
       required this.child,
       this.showBackButton = false,
-      this.onTapBackButton})
-      : super(key: key);
+      this.onTapBackButton});
 
   @override
   Widget build(BuildContext context) {

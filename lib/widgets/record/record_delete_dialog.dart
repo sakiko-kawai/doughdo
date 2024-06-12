@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class DeleteDialog extends StatelessWidget {
   final void Function()? onConfirm;
   final String text;
-  const DeleteDialog({Key? key, required this.onConfirm, required this.text})
-      : super(key: key);
+  const DeleteDialog({super.key, required this.onConfirm, required this.text});
 
   @override
   Widget build(BuildContext context) {

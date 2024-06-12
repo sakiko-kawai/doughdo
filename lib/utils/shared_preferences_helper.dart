@@ -11,11 +11,27 @@ class SpHelper {
     return _prefs!;
   }
 
-  Future<void> save(String name, String value) async {
+  Future<void> saveString(String name, String value) async {
     await _prefs!.setString(name, value);
   }
 
-  String get(String key) {
+  Future<void> saveInt(String name, int value) async {
+    await _prefs!.setInt(name, value);
+  }
+
+  String getString(String key) {
     return _prefs!.getString(key) ?? "0";
+  }
+
+  int? getInt(String key) {
+    return _prefs!.getInt(key);
+  }
+
+  void clear() async {
+    await _prefs!.clear();
+  }
+
+  void remove(String key) async {
+    await _prefs!.remove(key);
   }
 }

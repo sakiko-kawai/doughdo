@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 class CustomCard extends StatelessWidget {
   final Widget child;
   final void Function()? onTap;
-  const CustomCard({Key? key, required this.child, this.onTap})
-      : super(key: key);
+  const CustomCard({super.key, required this.child, this.onTap});
 
   @override
   Widget build(BuildContext context) {

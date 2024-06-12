@@ -13,6 +13,7 @@ class BpConvertButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var bpState = context.watch<BakersPercentageState>();
+    final prefs = SpHelper();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -29,9 +30,9 @@ class BpConvertButtons extends StatelessWidget {
             bpState.saltAmount = CalcHelper.calcAmount(
                 bpState.flourAmount, bpState.saltPercentage);
 
-            SpHelper().save(BpKey().starterAmount, bpState.starterAmount);
-            SpHelper().save(BpKey().waterAmount, bpState.waterAmount);
-            SpHelper().save(BpKey().saltAmount, bpState.saltAmount);
+            prefs.saveString(BpKey().starterAmount, bpState.starterAmount);
+            prefs.saveString(BpKey().waterAmount, bpState.waterAmount);
+            prefs.saveString(BpKey().saltAmount, bpState.saltAmount);
           },
           icon: const Icon(Icons.arrow_downward),
           label: const Text("Calculate Amount of Ingredients"),
@@ -49,10 +50,10 @@ class BpConvertButtons extends StatelessWidget {
             bpState.saltPercentage = CalcHelper.calcPercentage(
                 bpState.flourAmount, bpState.saltAmount);
 
-            SpHelper().save(BpKey().waterPercentage, bpState.starterAmount);
-            SpHelper()
-                .save(BpKey().starterPercentage, bpState.starterPercentage);
-            SpHelper().save(BpKey().saltPercentage, bpState.saltPercentage);
+            prefs.saveString(BpKey().waterPercentage, bpState.starterAmount);
+            prefs.saveString(
+                BpKey().starterPercentage, bpState.starterPercentage);
+            prefs.saveString(BpKey().saltPercentage, bpState.saltPercentage);
           },
           icon: const Icon(Icons.arrow_upward),
           label: const Text("Calculate Baker's Percentage"),

@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/db_helper.dart';
+import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ImageHelper {
@@ -16,6 +16,7 @@ class ImageHelper {
   String cacheTimeKey = "cache-time";
   int oneDayInMiliseconds = 86400000;
   final supabase = Supabase.instance.client;
+  final prefs = SpHelper();
 
   final ImagePicker _picker = ImagePicker();
 
@@ -81,21 +82,19 @@ class ImageHelper {
   }
 
   Future<void> saveImageUrlToCache(String path, String imageUrl) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(path, imageUrl);
-    await prefs.setInt(cacheTimeKey, DateTime.now().millisecondsSinceEpoch);
+    await prefs.saveString(path, imageUrl);
+    await prefs.saveInt(cacheTimeKey, DateTime.now().millisecondsSinceEpoch);
   }
 
   Future<String?> getImageUrlFromCache(String path) async {
-    final prefs = await SharedPreferences.getInstance();
     int? cacheTime = prefs.getInt(cacheTimeKey);
     if (cacheTime != null &&
         DateTime.now().millisecondsSinceEpoch - cacheTime <
             oneDayInMiliseconds) {
       return prefs.getString(path);
     } else {
-      await prefs.clear();
-      await prefs.remove(cacheTimeKey);
+      prefs.clear();
+      prefs.remove(cacheTimeKey);
       return null;
     }
   }
