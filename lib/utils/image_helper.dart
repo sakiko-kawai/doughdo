@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ImageHelper {
@@ -12,6 +13,8 @@ class ImageHelper {
   static double imageEditSize = 150;
   static double thumbnailSize = 100;
   String recordImagebucketName = "record-image";
+  String cacheTimeKey = "cache-time";
+  int oneDayInMiliseconds = 86400000;
   final supabase = Supabase.instance.client;
 
   final ImagePicker _picker = ImagePicker();
@@ -64,9 +67,37 @@ class ImageHelper {
   }
 
   Future<String> getImageUrl(String path) async {
-    return await supabase.storage
-        .from(recordImagebucketName)
-        .createSignedUrl(path, 60);
+    String? fromCache = await getImageUrlFromCache(path);
+    if (fromCache != null) {
+      return fromCache;
+    } else {
+      var url = await supabase.storage
+          .from(recordImagebucketName)
+          .createSignedUrl(path, 86400);
+
+      await saveImageUrlToCache(path, url);
+      return url;
+    }
+  }
+
+  Future<void> saveImageUrlToCache(String path, String imageUrl) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(path, imageUrl);
+    await prefs.setInt(cacheTimeKey, DateTime.now().millisecondsSinceEpoch);
+  }
+
+  Future<String?> getImageUrlFromCache(String path) async {
+    final prefs = await SharedPreferences.getInstance();
+    int? cacheTime = prefs.getInt(cacheTimeKey);
+    if (cacheTime != null &&
+        DateTime.now().millisecondsSinceEpoch - cacheTime <
+            oneDayInMiliseconds) {
+      return prefs.getString(path);
+    } else {
+      await prefs.clear();
+      await prefs.remove(cacheTimeKey);
+      return null;
+    }
   }
 
   Future<String> getUniqueFilePath(String directory, String filename) async {

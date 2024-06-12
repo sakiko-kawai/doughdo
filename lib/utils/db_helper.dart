@@ -77,7 +77,6 @@ class DbHelper {
 
     RecordImages? toBeAdded;
     if (toBeAddedImages != null) {
-      debugPrint("is good");
       List<String>? imagePaths =
           await ImageHelper().saveImages(toBeAddedImages);
       toBeAdded = RecordImages(imagePaths: imagePaths);
@@ -86,7 +85,6 @@ class DbHelper {
     RecordImages? updatedImages;
     if (newImages != null) {
       if (toBeAdded != null) {
-        debugPrint("add lists");
         updatedImages = RecordImages(
             imagePaths: newImages.imagePaths + toBeAdded.imagePaths);
       } else {
@@ -99,7 +97,6 @@ class DbHelper {
         updatedImages = null;
       }
     }
-    debugPrint(updatedImages!.imagePaths.length.toString());
     return updatedImages;
   }
 

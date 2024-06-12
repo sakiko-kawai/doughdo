@@ -1,4 +1,5 @@
 import 'package:bread_app/utils/image_helper.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class LoadImage extends StatelessWidget {
@@ -23,8 +24,8 @@ class LoadImage extends StatelessWidget {
             height: size,
           );
         } else {
-          return Image.network(
-            snapshot.data!,
+          return CachedNetworkImage(
+            imageUrl: snapshot.data!,
             height: size,
           );
         }

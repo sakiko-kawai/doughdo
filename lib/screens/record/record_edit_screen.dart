@@ -139,7 +139,7 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
       newImages,
       toBeAddedImages,
       widget.record.createdAt,
-    ); //TODO: update images
+    );
     debugPrint('one record edited');
 
     var updatedRecord = await DbHelper().getRecordById(widget.record.recordId!);
@@ -158,8 +158,6 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
   Widget build(BuildContext context) {
     TextController.setController(_notesController, _notesController.text);
     TextController.setController(_titleController, _titleController.text);
-
-    debugPrint(imageWidgets.length.toString());
 
     return CustomScaffold(
       showBackButton: true,
