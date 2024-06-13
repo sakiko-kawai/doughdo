@@ -1,3 +1,4 @@
+import 'package:bread_app/screens/auth/sign_in_screen.dart';
 import 'package:bread_app/screens/record/record_screen.dart';
 import 'package:bread_app/utils/db_helper.dart';
 import 'package:bread_app/utils/image_helper.dart';
@@ -8,6 +9,7 @@ import 'package:bread_app/widgets/custom/title.dart';
 import 'package:bread_app/models/record.dart';
 import 'package:bread_app/widgets/record/record_load_image.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'record_create_screen.dart';
 
@@ -35,6 +37,25 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
     });
   }
 
+  void fetchUserAndNavigate() {
+    final session = Supabase.instance.client.auth.currentSession;
+    if (session != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const RecordCreateScreen(),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const SignInScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -47,12 +68,7 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
           const CustomSizedBox(),
           CustomCard(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RecordCreateScreen(),
-                ),
-              );
+              fetchUserAndNavigate();
             },
             child: const Icon(Icons.add_outlined),
           ),
