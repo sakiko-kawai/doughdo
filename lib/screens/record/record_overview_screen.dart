@@ -31,7 +31,7 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
   void fetchRecordSetState() async {
     var fetchedData = await DbHelper().getAllRecords();
     fetchedData
-        .sort((a, b) => b.createdAt.createdAt.compareTo(a.createdAt.createdAt));
+        .sort((a, b) => b.createdAt!.createdAt.compareTo(a.createdAt!.createdAt));
     setState(() {
       records = fetchedData;
     });

@@ -19,8 +19,12 @@ class SpHelper {
     await _prefs!.setInt(name, value);
   }
 
-  String getString(String key) {
+  String getStringNum(String key) {
     return _prefs!.getString(key) ?? "0";
+  }
+
+  String? getString(String key) {
+    return _prefs!.getString(key);
   }
 
   int? getInt(String key) {

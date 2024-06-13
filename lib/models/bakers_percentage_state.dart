@@ -3,7 +3,7 @@ import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/widgets.dart';
 
 class BakersPercentageState extends ChangeNotifier {
-  String _starterHydration = SpHelper().getString(BpKey().starterHydration);
+  String _starterHydration = SpHelper().getStringNum(BpKey().starterHydration);
   set starterHydration(String starterHydration) {
     _starterHydration = starterHydration;
     notifyListeners();
@@ -11,7 +11,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get starterHydration => _starterHydration;
 
-  String _waterPercentage = SpHelper().getString(BpKey().waterPercentage);
+  String _waterPercentage = SpHelper().getStringNum(BpKey().waterPercentage);
   set waterPercentage(String waterPercentage) {
     _waterPercentage = waterPercentage;
     notifyListeners();
@@ -19,7 +19,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get waterPercentage => _waterPercentage;
 
-  String _starterPercentage = SpHelper().getString(BpKey().starterPercentage);
+  String _starterPercentage = SpHelper().getStringNum(BpKey().starterPercentage);
   set starterPercentage(String starterPercentage) {
     _starterPercentage = starterPercentage;
     notifyListeners();
@@ -27,7 +27,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get starterPercentage => _starterPercentage;
 
-  String _saltPercentage = SpHelper().getString(BpKey().saltPercentage);
+  String _saltPercentage = SpHelper().getStringNum(BpKey().saltPercentage);
   set saltPercentage(String saltPercentage) {
     _saltPercentage = saltPercentage;
     notifyListeners();
@@ -35,7 +35,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get saltPercentage => _saltPercentage;
 
-  String _flourAmount = SpHelper().getString(BpKey().flourAmount);
+  String _flourAmount = SpHelper().getStringNum(BpKey().flourAmount);
   set flourAmount(String flourAmount) {
     _flourAmount = flourAmount;
     notifyListeners();
@@ -43,7 +43,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get flourAmount => _flourAmount;
 
-  String _waterAmount = SpHelper().getString(BpKey().waterAmount);
+  String _waterAmount = SpHelper().getStringNum(BpKey().waterAmount);
   set waterAmount(String waterAmount) {
     _waterAmount = waterAmount;
     notifyListeners();
@@ -51,7 +51,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get waterAmount => _waterAmount;
 
-  String _starterAmount = SpHelper().getString(BpKey().starterAmount);
+  String _starterAmount = SpHelper().getStringNum(BpKey().starterAmount);
   set starterAmount(String starterAmount) {
     _starterAmount = starterAmount;
     notifyListeners();
@@ -59,7 +59,7 @@ class BakersPercentageState extends ChangeNotifier {
 
   String get starterAmount => _starterAmount;
 
-  String _saltAmount = SpHelper().getString(BpKey().saltAmount);
+  String _saltAmount = SpHelper().getStringNum(BpKey().saltAmount);
   set saltAmount(String saltAmount) {
     _saltAmount = saltAmount;
     notifyListeners();

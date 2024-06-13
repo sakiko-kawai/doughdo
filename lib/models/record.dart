@@ -6,7 +6,8 @@ class Record {
   final Notes notes;
   RecordImages? images;
   RecordThumbnailImage? thumbnail;
-  final CreatedAt createdAt;
+  final UserId? userId;
+  final CreatedAt? createdAt;
   final UpdatedAt updatedAt;
 
   Record({
@@ -15,7 +16,8 @@ class Record {
     required this.notes,
     this.images,
     this.thumbnail,
-    required this.createdAt,
+    this.userId,
+    this.createdAt,
     required this.updatedAt,
   });
 
@@ -23,11 +25,12 @@ class Record {
     var map = <String, dynamic>{
       'title': title.title,
       'notes': notes.notes,
-      'created_at': createdAt.createdAt,
-      'updated_at': updatedAt.updatedAt,
+      'updated_at': updatedAt.updatedAt
     };
 
     if (recordId != null) map['id'] = recordId?.id.toString();
+    if (userId != null) map['user_id'] = userId?.id;
+    if (createdAt != null) map['created_at'] = createdAt?.createdAt;
     if (images != null) map['images'] = jsonEncode(images?.imagePaths);
     if (thumbnail != null) map['thumbnail'] = thumbnail?.imagePath;
 
@@ -36,12 +39,12 @@ class Record {
 
   static Record fromMap(Map<String, dynamic> map) {
     var record = Record(
-      recordId: RecordId(id: map['id']),
-      title: RecordTitle(title: map['title']),
-      notes: Notes(notes: map['notes']),
-      createdAt: CreatedAt(map['created_at']),
-      updatedAt: UpdatedAt((map['updated_at'])),
-    );
+        recordId: RecordId(id: map['id']),
+        title: RecordTitle(title: map['title']),
+        notes: Notes(notes: map['notes']),
+        createdAt: CreatedAt(map['created_at']),
+        updatedAt: UpdatedAt((map['updated_at'])),
+        userId: UserId(map["user_id"]));
 
     if (map['images'] != null) {
       record.images = RecordImages(
@@ -88,4 +91,9 @@ class CreatedAt {
 class UpdatedAt {
   final String updatedAt;
   const UpdatedAt(this.updatedAt);
+}
+
+class UserId {
+  final String id;
+  const UserId(this.id);
 }

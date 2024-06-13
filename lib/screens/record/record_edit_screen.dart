@@ -138,7 +138,6 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
       originalImages,
       newImages,
       toBeAddedImages,
-      widget.record.createdAt,
     );
     debugPrint('one record edited');
 

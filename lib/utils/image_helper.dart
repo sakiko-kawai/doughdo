@@ -16,6 +16,7 @@ class ImageHelper {
   String cacheTimeKey = "cache-time";
   int oneDayInMiliseconds = 86400000;
   final supabase = Supabase.instance.client;
+  final currentUserId = Supabase.instance.client.auth.currentUser!.id;
   final prefs = SpHelper();
 
   final ImagePicker _picker = ImagePicker();
@@ -29,7 +30,7 @@ class ImageHelper {
     List<String> paths = [];
     for (var image in images) {
       String path = await supabase.storage.from(recordImagebucketName).upload(
-            await getUniqueFilePath("username", image.name),
+            await getUniqueFilePath(currentUserId, image.name),
             File(image.path),
             fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
           );
@@ -99,15 +100,15 @@ class ImageHelper {
     }
   }
 
-  Future<String> getUniqueFilePath(String directory, String filename) async {
-    String filePath = path.join(directory, filename);
+  Future<String> getUniqueFilePath(String userId, String filename) async {
+    String filePath = path.join(userId, filename);
     String fileNameWithoutExtension = path.basenameWithoutExtension(filePath);
     String fileExtension = path.extension(filePath);
     int counter = 1;
 
     while (File(filePath).existsSync()) {
       filePath = path.join(
-          directory, '$fileNameWithoutExtension($counter)$fileExtension');
+          userId, '$fileNameWithoutExtension($counter)$fileExtension');
       counter++;
     }
 
