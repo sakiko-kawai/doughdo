@@ -22,6 +22,8 @@ class RecordOverviewScreen extends StatefulWidget {
 
 class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
   List<Record> records = [];
+  final currentSession = Supabase.instance.client.auth.currentSession;
+
   @override
   void initState() {
     super.initState();
@@ -30,16 +32,15 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
 
   void fetchRecordSetState() async {
     var fetchedData = await DbHelper().getAllRecords();
-    fetchedData
-        .sort((a, b) => b.createdAt!.createdAt.compareTo(a.createdAt!.createdAt));
+    fetchedData.sort(
+        (a, b) => b.createdAt!.createdAt.compareTo(a.createdAt!.createdAt));
     setState(() {
       records = fetchedData;
     });
   }
 
-  void fetchUserAndNavigate() {
-    final session = Supabase.instance.client.auth.currentSession;
-    if (session != null) {
+  void navigateTo() {
+    if (currentSession != null) {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -68,56 +69,74 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
           const CustomSizedBox(),
           CustomCard(
             onTap: () {
-              fetchUserAndNavigate();
+              navigateTo();
             },
             child: const Icon(Icons.add_outlined),
           ),
           Column(
-            children: records
-                .map((record) => CustomCard(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RecordScreen(record: record),
-                          ),
-                        );
-                      },
-                      child: Row(
-                        children: [
-                          if (record.thumbnail != null)
-                            LoadImage(
-                              path: record.thumbnail!.imagePath,
-                              size: ImageHelper.thumbnailSize,
-                            ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                record.title.title,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+            children: currentSession != null
+                ? records
+                    .map((record) => CustomCard(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    RecordScreen(record: record),
                               ),
-                              SizedBox(
-                                width: 180,
-                                child: Text(
-                                  record.notes.notes,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 3,
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              if (record.thumbnail != null)
+                                LoadImage(
+                                  path: record.thumbnail!.imagePath,
+                                  size: ImageHelper.thumbnailSize,
                                 ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    record.title.title,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                  ),
+                                  SizedBox(
+                                    width: 180,
+                                    child: Text(
+                                      record.notes.notes,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 3,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ))
-                .toList(),
+                        ))
+                    .toList()
+                : [
+                    const CustomSizedBox(),
+                    const Text(
+                        "Sign in/Sign up to record your bake! It's free!"),
+                    ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignInScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text("Start recoding my bake"),
+                    )
+                  ],
           )
         ],
       ),

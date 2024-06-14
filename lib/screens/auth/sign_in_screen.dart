@@ -24,11 +24,13 @@ class _SignInScreenState extends State<SignInScreen> {
         password: _passwordController.text,
       );
 
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const RecordOverviewScreen(),
-          ));
+      if (mounted) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RecordOverviewScreen(),
+            ));
+      }
     } on AuthException catch (error) {
       if (mounted) {
         SnackBar(
@@ -49,6 +51,10 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
+      showBackButton: true,
+      onTapBackButton: () {
+        Navigator.pop(context);
+      },
       child: Column(
         children: [
           const CustomTitle(
@@ -78,7 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => SignUpScreen(),
+                    builder: (context) => const SignUpScreen(),
                   ));
             },
             child: const Text('Sign Up'),

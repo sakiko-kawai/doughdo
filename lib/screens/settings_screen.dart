@@ -12,11 +12,17 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final session = Supabase.instance.client.auth.currentSession;
+  final currentSession = Supabase.instance.client.auth.currentSession;
 
   Future<void> _signOut() async {
     try {
       await Supabase.instance.client.auth.signOut();
+      if (mounted) {
+        SnackBar(
+          content: const Text('Successfully signed out'),
+          backgroundColor: Theme.of(context).colorScheme.primary,
+        );
+      }
     } on AuthException catch (error) {
       if (mounted) {
         SnackBar(
@@ -40,7 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       child: Column(
         children: [
           const CustomTitle(text: "Settings"),
-          if (session != null)
+          if (currentSession != null)
             ElevatedButton(
               onPressed: _signOut,
               child: const Text('Sign Out'),
