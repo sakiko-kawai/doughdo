@@ -1,4 +1,5 @@
 import 'package:bread_app/screens/auth/sign_in_screen.dart';
+import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
@@ -17,10 +18,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordController = TextEditingController();
 
   Future<void> _signUp() async {
-    final response = await Supabase.instance.client.auth.signUp(
-      email: _emailController.text,
-      password: _passwordController.text,
-    );
+    try {
+      await Supabase.instance.client.auth.signUp(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text("Welcome! Enjoy your bake!"),
+          backgroundColor:
+              Theme.of(context).snackBarTheme.actionBackgroundColor,
+        ));
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const RecordOverviewScreen(),
+            ));
+      }
+    } catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text('Unexpected error occurred'),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
+    }
   }
 
   @override

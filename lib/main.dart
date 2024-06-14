@@ -20,7 +20,7 @@ class MyBreadApp extends StatelessWidget {
     return MaterialApp(
       title: 'My Bread App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),

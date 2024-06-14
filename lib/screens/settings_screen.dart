@@ -12,30 +12,39 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final currentSession = Supabase.instance.client.auth.currentSession;
+  dynamic currentSession;
+  @override
+  void initState() {
+    super.initState();
+    currentSession = Supabase.instance.client.auth.currentSession;
+  }
 
   Future<void> _signOut() async {
     try {
       await Supabase.instance.client.auth.signOut();
       if (mounted) {
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text('Successfully signed out'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        );
+          backgroundColor:
+              Theme.of(context).snackBarTheme.actionBackgroundColor,
+        ));
       }
+      setState(() {
+        currentSession = null;
+      });
     } on AuthException catch (error) {
       if (mounted) {
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error.message),
           backgroundColor: Theme.of(context).colorScheme.error,
-        );
+        ));
       }
     } catch (error) {
       if (mounted) {
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text('Unexpected error occurred'),
           backgroundColor: Theme.of(context).colorScheme.error,
-        );
+        ));
       }
     }
   }

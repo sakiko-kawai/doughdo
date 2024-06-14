@@ -25,6 +25,12 @@ class _SignInScreenState extends State<SignInScreen> {
       );
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: const Text("Welcome! Enjoy your bake!"),
+          backgroundColor:
+              Theme.of(context).snackBarTheme.actionBackgroundColor,
+        ));
+
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -33,17 +39,17 @@ class _SignInScreenState extends State<SignInScreen> {
       }
     } on AuthException catch (error) {
       if (mounted) {
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text(error.message),
           backgroundColor: Theme.of(context).colorScheme.error,
-        );
+        ));
       }
     } catch (error) {
       if (mounted) {
-        SnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text('Unexpected error occurred'),
           backgroundColor: Theme.of(context).colorScheme.error,
-        );
+        ));
       }
     }
   }

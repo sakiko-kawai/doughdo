@@ -2,7 +2,6 @@ import 'package:bread_app/models/record.dart';
 import 'package:bread_app/utils/image_helper.dart';
 import 'package:flutter/widgets.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class DbHelper {
