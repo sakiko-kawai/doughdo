@@ -27,6 +27,7 @@ class LoadImage extends StatelessWidget {
           return CachedNetworkImage(
             imageUrl: snapshot.data!,
             height: size,
+            fit: BoxFit.fill,
           );
         }
       },

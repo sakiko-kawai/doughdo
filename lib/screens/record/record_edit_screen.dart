@@ -45,19 +45,6 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
 
   void setImageWidgets() {
     imageWidgets = List.empty(growable: true);
-    imageWidgets.add(Card.outlined(
-      child: SizedBox(
-        width: ImageHelper.imageEditSize,
-        height: ImageHelper.imageEditSize,
-        child: IconButton(
-          onPressed: () {
-            pickAndCropImage(context);
-          },
-          icon: const Icon(Icons.add_a_photo),
-        ),
-      ),
-    ));
-
     if (newImages != null) {
       for (var path in newImages!.imagePaths) {
         imageWidgets.add(EditImage(
@@ -84,6 +71,18 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
         ));
       }
     }
+    imageWidgets.add(Card.outlined(
+      child: SizedBox(
+        width: ImageHelper.imageEditSize,
+        height: ImageHelper.imageEditSize,
+        child: IconButton(
+          onPressed: () {
+            pickAndCropImage(context);
+          },
+          icon: const Icon(Icons.add_a_photo),
+        ),
+      ),
+    ));
   }
 
   void onDelete(String imagePath) {
@@ -142,15 +141,16 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
     debugPrint('one record edited');
 
     var updatedRecord = await DbHelper().getRecordById(widget.record.recordId!);
-    if (!context.mounted) return;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => RecordScreen(
-          record: updatedRecord,
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => RecordScreen(
+            record: updatedRecord,
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   @override

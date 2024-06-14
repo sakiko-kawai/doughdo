@@ -49,6 +49,13 @@ class DbHelper {
         await getUpdatedImages(originalImages, newImages, toBeAddedImages);
     record.images = updatedImgs;
 
+    if (updatedImgs != null) {
+      record.thumbnail =
+          RecordThumbnailImage(imagePath: updatedImgs.imagePaths[0]);
+    } else {
+      record.thumbnail = null;
+    }
+
     await supabase.from(tableName).update(record.toMap()).eq('id', recordId);
   }
 

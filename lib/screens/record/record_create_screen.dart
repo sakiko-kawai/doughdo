@@ -27,7 +27,7 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
   Future<void> pickAndCropImage() async {
     var pickedFiles = await ImageHelper().pickMultiImage();
     List<XFile> croppedImages = List.empty(growable: true);
-    if (pickedFiles != null) {
+    if (pickedFiles != null && mounted) {
       for (var file in pickedFiles) {
         CroppedFile? croppedImage =
             await ImageHelper().cropImage(file, context);

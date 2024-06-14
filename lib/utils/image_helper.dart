@@ -55,13 +55,14 @@ class ImageHelper {
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
       uiSettings: [
         AndroidUiSettings(
-          toolbarTitle: 'Cropper',
+          toolbarTitle: 'Crop Image',
           toolbarColor: Colors.deepOrange,
           toolbarWidgetColor: Colors.white,
           initAspectRatio: CropAspectRatioPreset.square,
         ),
         IOSUiSettings(
-          title: 'Cropper',
+          title: 'Crop Image',
+          aspectRatioPresets: [CropAspectRatioPreset.square],
         ),
         WebUiSettings(context: context)
       ],

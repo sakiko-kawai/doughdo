@@ -57,7 +57,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
               );
             },
             icon: const Icon(
-              Icons.widgets_outlined,
+              Icons.settings_outlined,
               color: Colors.white,
             ),
           ),
