@@ -71,18 +71,20 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
         ));
       }
     }
-    imageWidgets.add(Card.outlined(
-      child: SizedBox(
-        width: ImageHelper.imageEditSize,
-        height: ImageHelper.imageEditSize,
-        child: IconButton(
-          onPressed: () {
-            pickAndCropImage(context);
-          },
-          icon: const Icon(Icons.add_a_photo),
+    if (imageWidgets.length < 5) {
+      imageWidgets.add(Card.outlined(
+        child: SizedBox(
+          width: ImageHelper.imageEditSize,
+          height: ImageHelper.imageEditSize,
+          child: IconButton(
+            onPressed: () {
+              pickAndCropImage(context);
+            },
+            icon: const Icon(Icons.add_a_photo),
+          ),
         ),
-      ),
-    ));
+      ));
+    }
   }
 
   void onDelete(String imagePath) {
@@ -116,9 +118,12 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
   }
 
   Future<void> pickAndCropImage(BuildContext context) async {
-    var pickedFiles = await ImageHelper().pickMultiImage();
+    int currentImgCount =
+        (newImages?.imagePaths.length ?? 0) + (toBeAddedImages.length);
+    var pickedFiles =
+        await ImageHelper().pickMultiImage(currentImgCount, context, mounted);
 
-    if (pickedFiles != null) {
+    if (pickedFiles.isNotEmpty && mounted) {
       for (var file in pickedFiles) {
         var croppedImage = await ImageHelper().cropImage(file, context);
         setState(() {

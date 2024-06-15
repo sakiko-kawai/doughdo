@@ -24,28 +24,30 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
   final TextEditingController _titleController = TextEditingController();
   List<XFile> images = List.empty(growable: true);
 
-  Future<void> pickAndCropImage() async {
-    var pickedFiles = await ImageHelper().pickMultiImage();
-    List<XFile> croppedImages = List.empty(growable: true);
-    if (pickedFiles != null && mounted) {
-      for (var file in pickedFiles) {
-        CroppedFile? croppedImage =
-            await ImageHelper().cropImage(file, context);
-        croppedImages.add(XFile(croppedImage!.path));
-      }
-    }
-
-    setState(() {
-      for (var img in croppedImages) {
-        images.add(img);
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     TextController.setController(_notesController, _notesController.text);
     TextController.setController(_titleController, _titleController.text);
+
+    Future<void> pickAndCropImage() async {
+      var pickedFiles =
+          await ImageHelper().pickMultiImage(images.length, context, mounted);
+
+      List<XFile> croppedImages = List.empty(growable: true);
+      if (pickedFiles.isNotEmpty && mounted) {
+        for (var file in pickedFiles) {
+          CroppedFile? croppedImage =
+              await ImageHelper().cropImage(file, context);
+          croppedImages.add(XFile(croppedImage!.path));
+        }
+      }
+
+      setState(() {
+        for (var img in croppedImages) {
+          images.add(img);
+        }
+      });
+    }
 
     Future<void> onSave() async {
       await DbHelper().insertRecord(
@@ -83,18 +85,20 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
           ));
         }
       }
-      imageWidgets.add(Card.outlined(
-        child: SizedBox(
-          width: 150,
-          height: 150,
-          child: IconButton(
-            onPressed: () {
-              pickAndCropImage();
-            },
-            icon: const Icon(Icons.add_a_photo),
+      if (imageWidgets.length < 5) {
+        imageWidgets.add(Card.outlined(
+          child: SizedBox(
+            width: 150,
+            height: 150,
+            child: IconButton(
+              onPressed: () {
+                pickAndCropImage();
+              },
+              icon: const Icon(Icons.add_a_photo),
+            ),
           ),
-        ),
-      ));
+        ));
+      }
     }
 
     setImageWidgets();

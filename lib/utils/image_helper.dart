@@ -21,8 +21,17 @@ class ImageHelper {
 
   final ImagePicker _picker = ImagePicker();
 
-  Future<List<XFile>?> pickMultiImage() async {
-    final pickedFiles = await _picker.pickMultiImage();
+  Future<List<XFile>> pickMultiImage(
+      int currentImgCount, BuildContext context, bool mounted) async {
+    List<XFile> pickedFiles = await _picker.pickMultiImage(limit: 5);
+
+    if (mounted && pickedFiles.length > 5 - currentImgCount) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: const Text("You cannot add more than 5 pictures per record"),
+        backgroundColor: Theme.of(context).snackBarTheme.actionBackgroundColor,
+      ));
+      pickedFiles = [];
+    }
     return pickedFiles;
   }
 
