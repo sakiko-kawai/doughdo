@@ -22,12 +22,13 @@ class RecordOverviewScreen extends StatefulWidget {
 
 class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
   List<Record> records = [];
-  final currentSession = Supabase.instance.client.auth.currentSession;
+  Session? currentSession;
 
   @override
   void initState() {
     super.initState();
     fetchRecordSetState();
+    currentSession = Supabase.instance.client.auth.currentSession;
   }
 
   void fetchRecordSetState() async {

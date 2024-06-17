@@ -38,6 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ));
       }
     } catch (error) {
+      debugPrint(error.toString());
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text('Unexpected error occurred'),

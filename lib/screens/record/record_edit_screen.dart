@@ -9,7 +9,7 @@ import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
 import 'package:bread_app/models/record.dart';
-import 'package:bread_app/widgets/record/record_delete_dialog.dart';
+import 'package:bread_app/widgets/custom/delete_dialog.dart';
 import 'package:bread_app/widgets/record/record_edit_image.dart';
 import 'package:bread_app/widgets/record/record_load_image.dart';
 import 'package:flutter/material.dart';
