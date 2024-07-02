@@ -3,17 +3,17 @@ import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-const supabaseUrl = 'https://dwgmzsnquakzdzcvxmxh.supabase.co';
+const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
 const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
 
 void main() async {
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
   await SpHelper().prefs;
-  runApp(const MyBreadApp());
+  runApp(const DoughdoApp());
 }
 
-class MyBreadApp extends StatelessWidget {
-  const MyBreadApp({super.key});
+class DoughdoApp extends StatelessWidget {
+  const DoughdoApp({super.key});
 
   @override
   Widget build(BuildContext context) {

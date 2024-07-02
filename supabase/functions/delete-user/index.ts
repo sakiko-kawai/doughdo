@@ -1,7 +1,5 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.14.0";
 
-console.log("Hello from Functions!");
-
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") {
     return new Response("ok", {
@@ -22,7 +20,6 @@ Deno.serve(async (req) => {
     const {
       data: { user },
     } = await supabaseClient.auth.getUser();
-    console.log(user);
 
     if (user == null) throw Error;
 
@@ -52,7 +49,7 @@ Deno.serve(async (req) => {
     const { data: deleted_user, error: delete_error } = await supabaseAdmin.auth
       .admin.deleteUser(user.id);
     if (delete_error) throw delete_error;
-    console.log("User deleted:", deleted_user);
+    console.log("User deleted:", user);
 
     return new Response(
       JSON.stringify(deleted_user, null, 2),
