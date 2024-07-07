@@ -27,8 +27,10 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
   @override
   void initState() {
     super.initState();
-    fetchRecordSetState();
     currentSession = Supabase.instance.client.auth.currentSession;
+    if (currentSession != null) {
+      fetchRecordSetState();
+    }
   }
 
   void fetchRecordSetState() async {

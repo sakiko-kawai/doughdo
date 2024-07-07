@@ -7,7 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class DbHelper {
   String tableName = "record";
   final supabase = Supabase.instance.client;
-  final currentUserId = Supabase.instance.client.auth.currentUser!.id;
+  final currentUserId = Supabase.instance.client.auth.currentUser?.id;
 
   Future<void> insertRecord(
     String title,
@@ -15,12 +15,15 @@ class DbHelper {
     List<XFile>? images,
     XFile? thumbnailImage,
   ) async {
+    if (currentUserId == null) {
+      throw const AuthException("There is no logged in user");
+    }
     Record record = Record(
       title: RecordTitle(title: title),
       notes: Notes(notes: notes),
       createdAt: CreatedAt(DateTime.now().toIso8601String()),
       updatedAt: UpdatedAt(DateTime.now().toIso8601String()),
-      userId: UserId(currentUserId),
+      userId: UserId(currentUserId!),
     );
     if (images != null) {
       List<String>? imagePaths = await ImageHelper().saveImages(images);
@@ -108,8 +111,13 @@ class DbHelper {
   }
 
   Future<List<Record>> getAllRecords() async {
-    var maps =
-        await supabase.from(tableName).select("*").eq("user_id", currentUserId);
+    if (currentUserId == null) {
+      throw const AuthException("There is no logged in user");
+    }
+    var maps = await supabase
+        .from(tableName)
+        .select("*")
+        .eq("user_id", currentUserId!);
     List<Record> records = maps.map((r) => Record.fromMap(r)).toList();
     debugPrint(currentUserId);
     return records;

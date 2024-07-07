@@ -1,14 +1,16 @@
 import 'package:bread_app/screens/bakers_percentage_screen.dart';
 import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-const supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-const supabaseKey = String.fromEnvironment('SUPABASE_KEY');
-
 void main() async {
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseKey);
+  await dotenv.load(fileName: ".env");
+  await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL'] ?? "",
+      anonKey: dotenv.env['SUPABASE_KEY'] ?? "");
   await SpHelper().prefs;
+
   runApp(const DoughdoApp());
 }
 
