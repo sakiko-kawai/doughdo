@@ -1,3 +1,4 @@
+import 'package:bread_app/models/color.dart';
 import 'package:flutter/material.dart';
 
 class DeleteDialog extends StatelessWidget {
@@ -20,7 +21,10 @@ class DeleteDialog extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: onConfirm,
-                  child: const Text('Delete'),
+                  child: Text(
+                    'Delete',
+                    style: TextStyle(color: DoughdoColor().error),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {

@@ -176,7 +176,6 @@ class _RecordEditScreenState extends State<RecordEditScreen> {
       child: Column(
         children: [
           const CustomTitle(
-            icon: Icons.bakery_dining_rounded,
             text: "Edit Record",
           ),
           const CustomSizedBox(),

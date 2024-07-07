@@ -37,8 +37,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
               builder: (context) => const RecordOverviewScreen(),
             ));
       }
+    } on AuthException catch (error) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(error.message),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ));
+      }
     } catch (error) {
-      debugPrint(error.toString());
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: const Text('Unexpected error occurred'),

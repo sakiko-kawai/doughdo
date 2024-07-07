@@ -21,8 +21,7 @@ class BakersPercentageScreen extends StatelessWidget {
         child: Column(
           children: [
             const CustomTitle(
-              icon: Icons.bakery_dining_rounded,
-              text: "Calculate your Bake!",
+              text: "Calculate your Bake",
             ),
             const CustomSizedBox(),
             BpSettingsForm(),

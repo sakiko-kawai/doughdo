@@ -1,3 +1,4 @@
+import 'package:bread_app/models/color.dart';
 import 'package:bread_app/screens/bakers_percentage_screen.dart';
 import 'package:bread_app/utils/shared_preferences_helper.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,13 @@ class DoughdoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Bread App',
+      title: 'Doughdo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
-        useMaterial3: true,
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.dark(
+          primary: DoughdoColor().orange,
+          secondary: DoughdoColor().cyan,
+        ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),
           constraints: BoxConstraints(maxWidth: 500),

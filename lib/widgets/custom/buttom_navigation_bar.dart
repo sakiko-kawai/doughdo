@@ -8,11 +8,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 50,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -26,10 +23,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.calculate_rounded,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.calculate_rounded),
           ),
           IconButton(
             enableFeedback: false,
@@ -41,10 +35,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.bookmark_rounded,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.bookmark_rounded),
           ),
           IconButton(
             enableFeedback: false,
@@ -56,10 +47,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
                 ),
               );
             },
-            icon: const Icon(
-              Icons.settings_outlined,
-              color: Colors.white,
-            ),
+            icon: const Icon(Icons.settings_outlined),
           ),
         ],
       ),

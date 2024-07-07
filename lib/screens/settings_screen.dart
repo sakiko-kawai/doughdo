@@ -1,3 +1,4 @@
+import 'package:bread_app/models/color.dart';
 import 'package:bread_app/widgets/custom/delete_dialog.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
@@ -84,12 +85,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const CustomTitle(text: "Settings"),
           const CustomSizedBox(),
           if (currentSession != null) ...[
-            ElevatedButton(
+            ElevatedButton.icon(
               onPressed: _signOut,
-              child: const Text('Sign Out'),
+              icon: const Icon(Icons.logout_outlined),
+              label: const Text('Sign Out'),
             ),
             const CustomSizedBox(),
-            TextButton(
+            ElevatedButton.icon(
               onPressed: () {
                 showDialog<String>(
                     context: context,
@@ -98,10 +100,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             _deleteAccount();
                             Navigator.pop(context);
                           },
-                          text: 'Are you sure you want to delete your account? This action cannot be reversed.',
+                          text:
+                              'Are you sure you want to delete your account? This action cannot be reversed.',
                         ));
               },
-              child: const Text("Delete account"),
+              icon: const Icon(Icons.delete_outline),
+              style: ElevatedButton.styleFrom(iconColor: DoughdoColor().error),
+              label: Text(
+                "Delete account",
+                style: TextStyle(color: DoughdoColor().error),
+              ),
             )
           ]
         ],

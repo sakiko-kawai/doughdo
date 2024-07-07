@@ -66,8 +66,7 @@ class _RecordOverviewScreenState extends State<RecordOverviewScreen> {
       child: Column(
         children: [
           const CustomTitle(
-            icon: Icons.bookmark_border_rounded,
-            text: "Record your Bake!",
+            text: "Record your Bake",
           ),
           const CustomSizedBox(),
           CustomCard(

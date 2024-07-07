@@ -116,7 +116,6 @@ class _RecordCreateScreenState extends State<RecordCreateScreen> {
       child: Column(
         children: [
           const CustomTitle(
-            icon: Icons.bakery_dining_rounded,
             text: "Add New Record",
           ),
           const CustomSizedBox(),

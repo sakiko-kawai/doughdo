@@ -1,41 +1,26 @@
-import 'package:bread_app/screens/auth/email_sign_in_screen.dart';
-import 'package:bread_app/screens/auth/sign_up_screen.dart';
 import 'package:bread_app/screens/record/record_overview_screen.dart';
 import 'package:bread_app/widgets/custom/scaffold.dart';
 import 'package:bread_app/widgets/custom/sized_box.dart';
 import 'package:bread_app/widgets/custom/title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class EmailSignInScreen extends StatefulWidget {
+  const EmailSignInScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<EmailSignInScreen> createState() => _EmailSignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
-  Future<void> _nativeGoogleSignIn() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final googleUser = await googleSignIn.signIn();
-    final googleAuth = await googleUser!.authentication;
-    final accessToken = googleAuth.accessToken;
-    final idToken = googleAuth.idToken;
+class _EmailSignInScreenState extends State<EmailSignInScreen> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
-    if (accessToken == null) {
-      throw 'No Access Token found.';
-    }
-    if (idToken == null) {
-      throw 'No ID Token found.';
-    }
-
+  Future<void> _signIn() async {
     try {
-      await Supabase.instance.client.auth.signInWithIdToken(
-        provider: OAuthProvider.google,
-        idToken: idToken,
-        accessToken: accessToken,
+      await Supabase.instance.client.auth.signInWithPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
       );
 
       if (mounted) {
@@ -80,32 +65,22 @@ class _SignInScreenState extends State<SignInScreen> {
           const CustomTitle(
             text: "Sign In",
           ),
+          const Text("Sign in or sign up to record your bakes"),
           const CustomSizedBox(),
-          SignInButton(
-            Buttons.Email,
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const EmailSignInScreen(),
-                  ));
-            },
-          ),
-          SignInButton(
-            Buttons.Google,
-            onPressed: _nativeGoogleSignIn,
+          TextField(
+            controller: _emailController,
+            decoration: const InputDecoration(labelText: 'Email'),
           ),
           const CustomSizedBox(),
-          const Text("Don't have an account?"),
+          TextField(
+            controller: _passwordController,
+            decoration: const InputDecoration(labelText: 'Password'),
+            obscureText: true,
+          ),
+          const CustomSizedBox(),
           ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const SignUpScreen(),
-                  ));
-            },
-            child: const Text('Sign Up'),
+            onPressed: _signIn,
+            child: const Text('Sign In'),
           ),
         ],
       ),
